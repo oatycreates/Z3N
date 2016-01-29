@@ -3,8 +3,8 @@
  * Author: Patrick Ferguson
  * Created: 29/01/2016
  * Copyright: (c) Team Z3N 2016.
- * License: Creative Commons Non Commercial Share Alike 3.0 free license
- * Purpose: 
+ * License: Creative Commons Non Commercial Share Alike 3.0 free license.
+ * Purpose: Allows the player to draw shapes using the mouse or touch input.
  **/
 using UnityEngine;
 using System.Collections;
@@ -15,11 +15,22 @@ namespace Z3N
     public class PlayerDraw : MonoBehaviour
     {
         #region Structures
+        /// <summary>
+        /// Describes the points within a shape that the player has drawn.
+        /// </summary>
         public struct SLinePoint
         {
+            /// <summary>
+            /// Viewport position.
+            /// </summary>
             Vector2 pos;
             bool isShapeEnd;
-            public SLinePoint(Vector2 a_pos, bool a_isShapeEnd)
+            /// <summary>
+            /// Creates the line point structure.
+            /// </summary>
+            /// <param name="a_pos">Viewport point.</param>
+            /// <param name="a_isShapeEnd">True if the point is the last one in the shape.</param>
+            public SLinePoint(Vector2 a_pos, bool a_isShapeEnd = false)
             {
                 pos = a_pos;
                 isShapeEnd = a_isShapeEnd;
@@ -36,7 +47,17 @@ namespace Z3N
         /// <summary>
         /// How often to sample the player's drag input.
         /// </summary>
-        public float inputSampleTime = 0.01f;
+        public float inputSampleTime = 0.1f;
+
+        /// <summary>
+        /// Depth to draw the line at, later replace this with raycasting.
+        /// </summary>
+        public float lineDrawDepth = 1.0f;
+
+        /// <summary>
+        /// Rendering 
+        /// </summary>
+        public GameObject linePointPrefab = null;
 
         /// <summary>
         /// Points along the line in screen pixel coordinates.
@@ -116,10 +137,23 @@ namespace Z3N
         #endregion
 
         #region Point drawing
-        protected void AddLinePoint(Vector2 a_point, bool a_isShapeEnd = false)
+        protected void AddLinePoint(Vector2 a_screenPoint, bool a_isShapeEnd = false)
         {
-            SLinePoint newPt = new SLinePoint(a_point, a_isShapeEnd);
+            // Convert the screen point to a viewport point
+            Vector2 viewPt = Camera.main.ScreenToViewportPoint(a_screenPoint);
+
+            // Save the point
+            SLinePoint newPt = new SLinePoint(viewPt, a_isShapeEnd);
             _linePoints.Add(newPt);
+
+            // TODO: Use raycasting (mask out all non-ground) instead of view port projection.
+
+            // Map the viewport point to the world.
+            Vector3 v3ViewPt = new Vector3(viewPt.x, viewPt.y, lineDrawDepth);
+            Vector3 worldPt = Camera.main.ViewportToWorldPoint(v3ViewPt);
+
+            // Create a point to show the line
+            GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity);
 
             Debug.Log("Added point: " + newPt);
         }
