@@ -114,7 +114,7 @@ namespace Z3N
             {
                 // Draw only using the first touch
                 Touch firstTouch = Input.touches[0];
-                isTouchDown = firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended;
+                isTouchDown = firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary;
                 isTouchUp = firstTouch.phase == TouchPhase.Ended || firstTouch.phase == TouchPhase.Canceled;
                 touchPos = firstTouch.position;
             }
