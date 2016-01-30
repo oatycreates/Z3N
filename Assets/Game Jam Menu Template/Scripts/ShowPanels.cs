@@ -64,15 +64,19 @@ public class ShowPanels : MonoBehaviour {
     //Call this function to activate and display the Difficulty panel during the main menu
     public void ShowDifficultyPanel()
     {
-        difficultyPanel.SetActive(true);
-        difficultyTint.SetActive(true);
+        difficultyPanel.SetActive(true);        
+    }
+
+    //Delay hiding the difficulty panel to allow for player feedback
+    public void DelayHideDifficultyPanel()
+    {
+        Invoke("HideDifficultyPanel",0.3f);
     }
 
     //Call this function to deactivate and hide the Difficulty panel during the main menu
     public void HideDifficultyPanel()
     {
         difficultyPanel.SetActive(false);
-        difficultyTint.SetActive(false);
     }
 
     //Call this function to activate and display the Info panel during the main menu
