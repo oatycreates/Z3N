@@ -85,6 +85,16 @@ namespace Z3N
         private List<SLinePoint> _linePoints;
 
         /// <summary>
+        /// Object that is following the current shape.
+        /// </summary>
+        private Transform _followObjTrans = null;
+
+        /// <summary>
+        /// Lerp value per second.
+        /// </summary>
+        private float _followObjSpeed = 1.0f;
+
+        /// <summary>
         /// Last time the line was recorded.
         /// </summary>
         private float _lastLineRecordTime = 0.0f;
@@ -257,6 +267,21 @@ namespace Z3N
         }
 
         /// <summary>
+        /// Set object to follow the trail.
+        /// </summary>
+        /// <param name="a_followObjTrans">Transform</param>
+        /// <param name="a_followSpeed">Speed</param>
+        public void SetFollowObjHandle(Transform a_followObjTrans, float a_followSpeed)
+        {
+            _followObjTrans = a_followObjTrans;
+            _followObjSpeed = a_followSpeed;
+            
+            // Start the follow person at their starting position
+            _lineEndWorldPt = _followObjTrans.position;
+            UpdatePlayerFollow();
+        }
+
+        /// <summary>
         /// Whether the current shape is active.
         /// </summary>
         /// <param name="a_isActive">True if active, false if not.</param>
@@ -354,6 +379,8 @@ namespace Z3N
 
                 // Store last world point for drawing the curve
                 _lineEndWorldPt = worldPt;
+
+                UpdatePlayerFollow();
             }
         }
 
@@ -397,6 +424,26 @@ namespace Z3N
             // Find the first object hit
             bool hitSomething = Physics.Raycast(a_viewRay, out hitInfo, 1000.0f);
             return hitSomething ? hitInfo.transform.gameObject.layer.Equals(a_desiredLayer.value) : false;
+        }
+        #endregion
+
+        #region Player following
+        private void UpdatePlayerFollow()
+        {
+            if (_followObjTrans)
+            {
+                if (_isPlayingBackDrawing)
+                {
+                    // Lerp towards the target position
+                    Vector3 newPos = _lineEndWorldPt;// Vector3.Lerp(_followObjTrans.position, _lineEndWorldPt, _followObjSpeed * Time.deltaTime);
+                    _followObjTrans.position = newPos;
+                }
+                else if (_followObjTrans.gameObject.name.Contains("Teacher"))
+                {
+                    // Hide the teacher's finger unless it is playing back
+                    _followObjTrans.position = new Vector3(0, -1000, 0);
+                }
+            }
         }
         #endregion
     }

@@ -367,7 +367,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138824e809f35244692d56815242aa0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teacherPlaybackStayTime: 5
+  teacherPlaybackStayTime: 1
+  followObjTrans: {fileID: 419666}
+  followObjSpeed: 5
   isTeacher: 1
   shapePrefab: {fileID: 116052, guid: ebaea2e83d807574eb6d4828e594a7ed, type: 2}
 --- !u!122 &12234264

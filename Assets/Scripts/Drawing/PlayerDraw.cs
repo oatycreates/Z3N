@@ -21,6 +21,16 @@ namespace Z3N
         public float teacherPlaybackStayTime = 5.0f;
 
         /// <summary>
+        /// Object that is following the current shape.
+        /// </summary>
+        public Transform followObjTrans = null;
+
+        /// <summary>
+        /// Lerp value per second.
+        /// </summary>
+        public float followObjSpeed = 1.0f;
+
+        /// <summary>
         /// Whether this player is the teacher (game host).
         /// </summary>
         public bool isTeacher = true;
@@ -124,6 +134,7 @@ namespace Z3N
             GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
             ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
             newShape.SetDrawScriptHandle(this);
+            newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
             newShape.SetIsActiveShape(true);
             newShapeObj.transform.parent = _linePtHolderTrans;
 
