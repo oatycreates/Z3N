@@ -12,6 +12,8 @@ public class ShowPanels : MonoBehaviour {
     public GameObject infoPanel;                            //Store a reference to the Game Object InfoPanel 
     public GameObject infoTint;						        //Store a reference to the Game Object InfoTint 
     public GameObject creditsPanel;                         //Store a reference to the Game Object CreditsPanel
+    public GameObject instructionPanel;                            //Store a reference to the Game Object InfoPanel 
+    public GameObject instructionTint;                             //Store a reference to the Game Object InfoTint 
 
     //Call this function to activate and display the Options panel during the main menu
     public void ShowOptionsPanel()
@@ -93,6 +95,24 @@ public class ShowPanels : MonoBehaviour {
     public void HideCreditsPanel()
     {
         creditsPanel.SetActive(false);
+    }
+
+    //Call this function to activate and display the Info panel during the main menu
+    public void ShowInstructionPanel()
+    {
+        instructionPanel.SetActive(true);
+        instructionTint.SetActive(true);
+        //Set time.timescale to 0, this will cause animations and physics to stop updating
+        Time.timeScale = 0;
+    }
+
+    //Call this function to deactivate and hide the Info panel during the main menu
+    public void HideInstructionPanel()
+    {
+        instructionPanel.SetActive(false);
+        instructionTint.SetActive(false);
+        //Set time.timescale to 1, this will cause animations and physics to continue updating at regular speed
+        Time.timeScale = 1;
     }
 
 }
