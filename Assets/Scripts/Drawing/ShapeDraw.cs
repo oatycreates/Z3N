@@ -135,6 +135,16 @@ namespace Z3N
         private float _linePlaybackProgress = 0.0f;
 
         /// <summary>
+        /// Rate to fade the playback line out at.
+        /// </summary>
+        private float _playbackLineFadeRate = 1.0f;
+
+        /// <summary>
+        /// Progress towards totally fading out the line post playback.
+        /// </summary>
+        private float _playbackLineFadeProgress = 0.0f;
+
+        /// <summary>
         /// Whether this shape is currently being drawn.
         /// </summary>
         private bool _isCurrentShape = false;
@@ -273,6 +283,14 @@ namespace Z3N
                     }
                 }
             }
+            /*else if (!_isPlayingBackDrawing && _playbackLineFadeProgress < 1.0f)
+            {
+                // Fade the line out
+                _playbackLineFadeProgress += _playbackLineFadeRate * Time.deltaTime;
+                float currFadeOutMult = (1.0f - _playbackLineFadeProgress) * maxLineThickness;
+                // Simulate basic 'running out of ink'
+                _lineRenderer.SetWidth(currFadeOutMult * maxLineThickness * (1.0f / _linePoints.Count), currFadeOutMult * maxLineThickness);
+            }*/
         }
         #endregion
 
