@@ -31,6 +31,11 @@ namespace Z3N
         public Transform followObjTrans = null;
 
         /// <summary>
+        /// Handle to the game manager.
+        /// </summary>
+        public GameManager gameManScript = null;
+
+        /// <summary>
         /// Lerp value per second.
         /// </summary>
         public float followObjSpeed = 1.0f;
@@ -63,6 +68,13 @@ namespace Z3N
         // Cached variables
         private static GameObject _shapeHolder = null;
         private static Transform _shapeHolderTrans = null;
+        #endregion
+
+        #region Getter/Setter
+        public bool GetIsPlayingBack()
+        {
+            return _isPlayingBackDrawing;
+        }
         #endregion
 
         #region Unity code
@@ -159,7 +171,7 @@ namespace Z3N
         /// <summary>
         /// Begins the process of playing back the teacher's drawing.
         /// </summary>
-        private void StartTeacherPlayback()
+        public void StartTeacherPlayback()
         {
             ClearDrawnLines();
             _teacherShapePlaybackProgress = 0;
@@ -209,7 +221,7 @@ namespace Z3N
             ClearDrawnLines();
             _isPlayingBackDrawing = false;
 
-            SwitchToOtherPlayer();
+            gameManScript.SwitchToOtherPlayer(isTeacher);
         }
 
         /// <summary>
@@ -227,37 +239,6 @@ namespace Z3N
                     // TODO: Use object pooling for shape drawings.
                     GameObject.Destroy(shape.gameObject);
                 }
-            }
-        }
-        #endregion
-
-        #region Player switching
-        /// <summary>
-        /// Switches from teacher to student, and visa versa.
-        /// </summary>
-        void SwitchToOtherPlayer()
-        {
-            // Switch from teacher to student
-            if (isTeacher)
-            {
-                GameObject[] goList = GameObject.FindGameObjectsWithTag("Student");
-                PlayerDraw foundPlayerDraw = null;
-                foreach (GameObject go in goList)
-                {
-                    foundPlayerDraw = go.GetComponent<PlayerDraw>();
-                    if (foundPlayerDraw)
-                    {
-                        break;
-                    }
-                }
-
-                foundPlayerDraw.enabled = true;
-                this.enabled = false;
-            }
-            else
-            {
-                // TODO: Switch from student to teacher
-                Application.LoadLevel(Application.loadedLevel);
             }
         }
         #endregion

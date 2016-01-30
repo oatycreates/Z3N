@@ -370,6 +370,7 @@ MonoBehaviour:
   teacherPlaybackStayTime: 1
   lineCol: {r: 0.81960785, g: 0, b: 1, a: 1}
   followObjTrans: {fileID: 419666}
+  gameManScript: {fileID: 0}
   followObjSpeed: 5
   isTeacher: 1
   shapePrefab: {fileID: 116052, guid: ebaea2e83d807574eb6d4828e594a7ed, type: 2}
