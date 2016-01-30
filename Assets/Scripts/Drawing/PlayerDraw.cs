@@ -95,13 +95,18 @@ namespace Z3N
         void Update()
         {
             // Simple code for the moment to simulate the triggering of the teacher's playback
-            if (Input.touchCount >= 3 || Input.GetKeyUp(KeyCode.R))
+            if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
             {
                 if (isTeacher && !_isPlayingBackDrawing)
                 {
                     // Editor to trigger teacher playback
                     StartTeacherPlayback();
                 }
+            }
+
+            if (Input.touchCount == 4 || Input.GetKeyUp(KeyCode.Escape))
+            {
+                Application.LoadLevel(0);
             }
         }
         #endregion
