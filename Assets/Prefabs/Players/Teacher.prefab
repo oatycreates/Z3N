@@ -124,7 +124,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 139116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 13.28, y: 0, z: -15.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 419666}
@@ -401,7 +401,7 @@ ParticleSystem:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135022}
   serializedVersion: 2
-  lengthInSec: 3
+  lengthInSec: 4
   startDelay:
     scalar: 0
     maxCurve:
@@ -753,7 +753,7 @@ ParticleSystem:
       minMaxState: 0
     randomizeRotationDirection: 0
     gravityModifier: 0.1
-    maxNumParticles: 100
+    maxNumParticles: 200
     rotation3D: 0
   ShapeModule:
     serializedVersion: 2
@@ -780,7 +780,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 30
+      scalar: 45
       maxCurve:
         serializedVersion: 2
         m_Curve:

@@ -60,14 +60,14 @@ namespace Z3N
         public float inputSampleTime = 0.03f;
 
         /// <summary>
+        /// Speed that the teacher playback lerps between each point per second.
+        /// </summary>
+        public float teacherPlaybackRate = 1.0f;
+
+        /// <summary>
         /// Thickness of the line.
         /// </summary>
         public float maxLineThickness = 0.1f;
-
-        /// <summary>
-        /// Time between each drawn teacher point.
-        /// </summary>
-        public float teacherPlaybackStep = 0.03f;
 
         /// <summary>
         /// Depth to draw the line at, later replace this with raycasting.
@@ -125,6 +125,16 @@ namespace Z3N
         private int _teacherPlaybackProgress = 0;
 
         /// <summary>
+        /// Lerps between this point and the current line point.
+        /// </summary>
+        private Vector2 _lastPlaybackViewPt = Vector2.zero;
+
+        /// <summary>
+        /// Current progress between line segments.
+        /// </summary>
+        private float _linePlaybackProgress = 0.0f;
+
+        /// <summary>
         /// Whether this shape is currently being drawn.
         /// </summary>
         private bool _isCurrentShape = false;
@@ -178,6 +188,11 @@ namespace Z3N
         /// </summary>
         void Update()
         {
+            if (_isPlayingBackDrawing)
+            {
+                StepTeacherShapePlayback();
+            }
+
             if (_isCurrentShape)
             {
                 // Touch position in pixel coordinates
@@ -311,12 +326,12 @@ namespace Z3N
         public void StartTeacherShapePlayback()
         {
             ClearDrawnLine();
-            _teacherPlaybackProgress = 0;
-            _isPlayingBackDrawing = true;
-
             if (_linePoints.Count > 0)
             {
-                StartCoroutine(StepTeacherShapePlayback());
+                _isPlayingBackDrawing = true;
+
+                _linePlaybackProgress = 1.0f;
+                _lastPlaybackViewPt = _linePoints[0].viewPos;
             }
         }
 
@@ -390,31 +405,34 @@ namespace Z3N
         }
 
         /// <summary>
-        /// Draws an individual line segment during the teacher's playback animation.
+        /// Lerps to an individual line segment during the teacher's playback animation.
         /// </summary>
-        /// <returns>Time to wait between each playback animation step.</returns>
-        private IEnumerator StepTeacherShapePlayback()
+        private void StepTeacherShapePlayback()
         {
             SLinePoint currPt = _linePoints[_teacherPlaybackProgress];
 
+            // Lerp from current point to new point
+            _linePlaybackProgress += teacherPlaybackRate * Time.deltaTime / Vector2.Distance(_lastPlaybackViewPt, currPt.viewPos);
+            _linePlaybackProgress = Mathf.Min(_linePlaybackProgress, 1.0f);
+            Vector2 newViewPos = Vector2.Lerp(_lastPlaybackViewPt, currPt.viewPos, _linePlaybackProgress);
+
             // Draw each line point
-            DrawNewLinePointJoin(currPt.viewPos, _teacherPlaybackProgress + 1, currPt.touchPressureMult);
+            DrawNewLinePointJoin(newViewPos, _teacherPlaybackProgress + 1, currPt.touchPressureMult);
 
-            ++_teacherPlaybackProgress;
-
-            // Repeat until drawing is done
-            if (_teacherPlaybackProgress < _linePoints.Count)
+            if (_linePlaybackProgress >= 1.0f)
             {
-                // Wait before replaying
-                yield return new WaitForSeconds(teacherPlaybackStep);
-                StartCoroutine(StepTeacherShapePlayback());
-            }
-            else
-            {
-                // Report back to the manager to trigger drawing the next shape.
-                _isPlayingBackDrawing = false;
-                UpdatePlayerFollow();
-                _parentDrawScript.DonePlayingBackShape();
+                _linePlaybackProgress = 0.0f;
+                _lastPlaybackViewPt = currPt.viewPos;
+                
+                // Repeat until drawing is done
+                ++_teacherPlaybackProgress;
+                if (_teacherPlaybackProgress >= _linePoints.Count)
+                {
+                    // Report back to the manager to trigger drawing the next shape.
+                    _isPlayingBackDrawing = false;
+                    UpdatePlayerFollow();
+                    _parentDrawScript.DonePlayingBackShape();
+                }
             }
         }
 
