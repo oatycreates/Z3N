@@ -203,7 +203,7 @@ namespace Z3N
                 StepTeacherShapePlayback();
             }
 
-            if (_isCurrentShape)
+            if (_isCurrentShape && _parentDrawScript.gameObject.activeSelf && _parentDrawScript.isActiveAndEnabled)
             {
                 // Touch position in pixel coordinates
                 Vector2 touchPos = Vector2.zero;
@@ -351,6 +351,15 @@ namespace Z3N
                 _linePlaybackProgress = 1.0f;
                 _lastPlaybackViewPt = _linePoints[0].viewPos;
             }
+        }
+
+        /// <summary>
+        /// Whether this shape has any content in it.
+        /// </summary>
+        /// <returns>True if started, false if not.</returns>
+        public bool GetShapeHasStarted()
+        {
+            return _linePoints.Count > 0;
         }
 
         private void AddLinePoint(Vector2 a_viewPt, float a_touchPressureMult, bool a_isShapeEnd = false)

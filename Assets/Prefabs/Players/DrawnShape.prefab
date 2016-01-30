@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d52a29f88a916d4b81c83946db83bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputSampleTime: 0.03
+  inputSampleTime: 0.015
   teacherPlaybackRate: 0.5
   maxLineThickness: 3
   lineDrawDepth: 1
@@ -132,6 +132,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: teacherPlaybackRate
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: inputSampleTime
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_UseWorldSpace
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
