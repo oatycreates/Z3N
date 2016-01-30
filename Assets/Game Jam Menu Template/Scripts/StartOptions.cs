@@ -67,11 +67,14 @@ public class StartOptions : MonoBehaviour {
 
 	public void LoadDelayed()
 	{
-		//Pause button now works if escape is pressed since we are no longer in Main menu.
-		inMainMenu = false;
-
-		//Hide the main menu UI element
-		showPanels.HideMenu ();
+        
+        if (sceneToStart == 1)
+        {
+            //Pause button now works if escape is pressed since we are no longer in Main menu.
+            inMainMenu = false;
+            //Hide the main menu UI element
+            showPanels.HideMenu();
+        }
 
 		//Load the selected scene, by scene index number in build settings
 		Application.LoadLevel (sceneToStart);
