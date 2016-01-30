@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 namespace Z3N
 {
+    [RequireComponent(typeof(LineRenderer))]
     public class PlayerDraw : MonoBehaviour
     {
         #region Structures
@@ -21,24 +22,24 @@ namespace Z3N
         public struct SLinePoint
         {
             /// <summary>
-            /// Viewport position.
+            /// Viewport position of the point.
             /// </summary>
-            Vector2 pos;
+            Vector2 viewPos;
             bool isShapeEnd;
             /// <summary>
             /// Creates the line point structure.
             /// </summary>
-            /// <param name="a_pos">Viewport point.</param>
+            /// <param name="a_viewPos">Viewport point.</param>
             /// <param name="a_isShapeEnd">True if the point is the last one in the shape.</param>
-            public SLinePoint(Vector2 a_pos, bool a_isShapeEnd = false)
+            public SLinePoint(Vector2 a_viewPos, bool a_isShapeEnd = false)
             {
-                pos = a_pos;
+                viewPos = a_viewPos;
                 isShapeEnd = a_isShapeEnd;
             }
 
             public override string ToString()
             {
-                return "Point: " + pos.ToString() + ", End shape: " + isShapeEnd;
+                return "Point: " + viewPos.ToString() + ", End shape: " + isShapeEnd;
             }
         }
         #endregion
@@ -68,6 +69,14 @@ namespace Z3N
         /// Last time the line was recorded.
         /// </summary>
         protected float _lastLineRecordTime = 0.0f;
+
+        /// <summary>
+        /// Current end of the line.
+        /// </summary>
+        protected Vector3 _lineEndWorldPt = Vector3.zero;
+
+        // Cached variables
+        private LineRenderer _lineRenderer = null;
         #endregion
 
         #region Unity code
@@ -76,7 +85,11 @@ namespace Z3N
         /// </summary>
         void Awake()
         {
+            // Set default property values
+            _lastLineRecordTime = 0.0f;
+            _lineEndWorldPt = Vector3.zero;
             _linePoints = new List<SLinePoint>();
+            _lineRenderer = GetComponent<LineRenderer>();
         }
 
         /// <summary>
@@ -155,6 +168,9 @@ namespace Z3N
             // Create a point to show the line
             GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity);
 
+            // Connect the line dots
+            DrawNewLinePointJoin(worldPt);
+
             Debug.Log("Added point: " + newPt);
         }
 
@@ -164,6 +180,28 @@ namespace Z3N
             AddLinePoint(a_point, true);
 
             // TODO: If out of ink, time to compare score or show to student
+        }
+
+        /// <summary>
+        /// Draws a new join between the last added point and the previous.
+        /// </summary>
+        /// <param name="a_newWorldPoint"> Point to draw the line to.</param>
+        protected void DrawNewLinePointJoin(Vector3 a_newWorldPoint)
+        {
+            if (_linePoints.Count <= 0)
+            {
+                Debug.LogWarning("Unable to draw line join between 0 points!");
+                return;
+            }
+
+            // TODO: Draw curved line using: http://www.habrador.com/tutorials/catmull-rom-splines/
+
+            // Draw straight line between latest 2 points
+            _lineRenderer.SetVertexCount(_linePoints.Count);
+            _lineRenderer.SetPosition(_linePoints.Count - 1, a_newWorldPoint);
+
+            // Store last world point for drawing the curve
+            _lineEndWorldPt = a_newWorldPoint;
         }
         #endregion
     }
