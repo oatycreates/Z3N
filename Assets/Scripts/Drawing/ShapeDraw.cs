@@ -58,7 +58,6 @@ namespace Z3N
         /// How often to sample the player's drag input.
         /// </summary>
         public float inputSampleTime = 0.03f;
-
         /// <summary>
         /// Speed that the teacher playback lerps between each point per second.
         /// </summary>
