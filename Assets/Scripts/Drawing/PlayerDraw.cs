@@ -90,6 +90,11 @@ namespace Z3N
         protected float _lastLineRecordTime = 0.0f;
 
         /// <summary>
+        /// Whether the 
+        /// </summary>
+        protected bool _isPlayingBackDrawing = false;
+
+        /// <summary>
         /// Current end of the line.
         /// </summary>
         protected Vector3 _lineEndWorldPt = Vector3.zero;
@@ -113,6 +118,7 @@ namespace Z3N
         {
             // Set default property values
             _lastLineRecordTime = 0.0f;
+            _isPlayingBackDrawing = false;
             _lineEndWorldPt = Vector3.zero;
             _linePoints = new List<SLinePoint>();
             _lineRenderer = GetComponent<LineRenderer>();
@@ -180,27 +186,31 @@ namespace Z3N
             }
 
             // Simple code for the moment to simulate the triggering of the teacher's playback
-            if (Input.touchCount > 3 || Input.GetKeyUp(KeyCode.R))
+            if (Input.touchCount >= 3 || Input.GetKeyUp(KeyCode.R))
             {
-                if (isTeacher)
+                if (isTeacher && !_isPlayingBackDrawing)
                 {
                     // Editor to trigger teacher playback
                     StartTeacherPlayback();
                 }
             }
 
-            if (isTouchUp)
+            // Prevent drawing during playback
+            if (!_isPlayingBackDrawing)
             {
-                // End the current shape
-                EndShape(touchPos, touchPressureMult);
-            }
-            else if (isTouchDown)
-            {
-                // Continue the current shape
-                if (Time.time - _lastLineRecordTime > inputSampleTime)
+                if (isTouchUp)
                 {
-                    AddLinePoint(touchPos, touchPressureMult);
-                    _lastLineRecordTime = Time.time;
+                    // End the current shape
+                    EndShape(touchPos, touchPressureMult);
+                }
+                else if (isTouchDown)
+                {
+                    // Continue the current shape
+                    if (Time.time - _lastLineRecordTime > inputSampleTime)
+                    {
+                        AddLinePoint(touchPos, touchPressureMult);
+                        _lastLineRecordTime = Time.time;
+                    }
                 }
             }
         }
@@ -271,6 +281,7 @@ namespace Z3N
         {
             ClearDrawnLine();
             _teacherPlaybackProgress = 0;
+            _isPlayingBackDrawing = true;
 
             if (_linePoints.Count > 0)
             {
@@ -297,6 +308,9 @@ namespace Z3N
             else
             {
                 // TODO: Report back to the manager to trigger drawing the next shape
+
+                // Done playing back the line
+                _isPlayingBackDrawing = false;
             }
         }
 
