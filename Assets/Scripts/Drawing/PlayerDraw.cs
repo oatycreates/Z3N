@@ -19,7 +19,10 @@ namespace Z3N
         /// Number of seconds to keep the drawing up after completion.
         /// </summary>
         public float teacherPlaybackStayTime = 5.0f;
-
+        /// <summary>
+        /// Is the player currently drawing a line
+        /// </summary>
+        static public bool s_isDrawing;
         /// <summary>
         /// Object that is following the current shape.
         /// </summary>
