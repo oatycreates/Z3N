@@ -60,6 +60,11 @@ namespace Z3N
         public float inputSampleTime = 0.03f;
 
         /// <summary>
+        /// Thickness of the line.
+        /// </summary>
+        public float maxLineThickness = 0.1f;
+
+        /// <summary>
         /// Time between each drawn teacher point.
         /// </summary>
         public float teacherPlaybackStep = 0.03f;
@@ -313,7 +318,7 @@ namespace Z3N
             _lineRenderer.SetPosition(a_newPtCount - 1, worldPt);
 
             // Simulate basic 'running out of ink'
-            _lineRenderer.SetWidth(0.01f * a_touchPressureMult, 1.0f / _linePoints.Count * a_touchPressureMult);
+            _lineRenderer.SetWidth(maxLineThickness * a_touchPressureMult, 1.0f / _linePoints.Count * a_touchPressureMult);
 
             // Store last world point for drawing the curve
             _lineEndWorldPt = worldPt;
