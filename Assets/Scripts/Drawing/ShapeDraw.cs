@@ -299,7 +299,9 @@ namespace Z3N
             // Connect the line dots
             DrawNewLinePointJoin(a_viewPt, _linePoints.Count, a_touchPressureMult);
 
+#if UNITY_EDITOR
             Debug.Log("Added point: " + newPt);
+#endif
         }
 
         private void EndShape(Vector2 a_viewPoint, float a_touchPressureMult)
