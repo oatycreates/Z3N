@@ -202,7 +202,7 @@ namespace Z3N
                 StepTeacherShapePlayback();
             }
 
-            if (_isCurrentShape && _parentDrawScript.gameObject.activeSelf && _parentDrawScript.isActiveAndEnabled)
+            if (_isCurrentShape && _parentDrawScript.gameObject.activeSelf && _parentDrawScript.isActiveAndEnabled && _parentDrawScript.InkNotEmpty)
             {
                 // Touch position in pixel coordinates
                 Vector2 touchPos = Vector2.zero;

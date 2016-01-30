@@ -38,18 +38,10 @@ namespace Z3N
         [SerializeField]
         private UnityEngine.UI.Slider _inkBar;
         /// <summary>
-        /// Used to modify the ink bar over time;
-        /// </summary>
-        private float _inkBarMod = 1.0f;
-        /// <summary>
-        /// Is the first time running (sorry Pat)
-        /// </summary>
-        private bool _firstTime = true;
-        /// <summary>
-        /// The total number of shapes that can be created
+        /// The total number of ink the can be used
         /// </summary>
         [SerializeField]
-        private int _shapeNumCap = 6;
+        private int _inkCount = 5;
         /// <summary>
         /// Handle to the game manager.
         /// </summary>
@@ -95,6 +87,13 @@ namespace Z3N
         {
             return _isPlayingBackDrawing;
         }
+        /// <summary>
+        /// Return true if there is more ink the player can use
+        /// </summary>
+        public bool InkNotEmpty
+        {
+            get { return (_inkBar.value > 0.01f); }
+        }
         #endregion
 
         #region Unity code
@@ -131,9 +130,10 @@ namespace Z3N
         /// </summary>
         void Update()
         {
-            if(_inkBarMod < _inkBar.value)
+            bool isInteracting = (Input.touchCount > 1 || Input.GetMouseButton(0));
+            if(_inkBar.value > 0.001f && isInteracting)
             {
-                _inkBar.value -= (1.0f / (_shapeNumCap * 50));
+                _inkBar.value -= (Time.deltaTime / _inkCount);
             }
             // Simple code for the moment to simulate the triggering of the teacher's playback
             /*
@@ -155,6 +155,14 @@ namespace Z3N
             {
                 Application.LoadLevel(0);
             }
+        }
+
+        /// <summary>
+        /// Resets the inkbar on enable
+        /// </summary>
+        void OnEnable()
+        {
+            _inkBar.value = 1.0f;
         }
         #endregion
 
@@ -183,10 +191,8 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            if (_inkBarMod > 0.01f)
+            if (_inkBar.value > 0.01f)
             {
-                if (!_firstTime)
-                    _inkBarMod = _inkBar.value - (1.0f / _shapeNumCap);
                 // Set up the new shape
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
                 ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
@@ -203,7 +209,6 @@ namespace Z3N
 
                 _drawnShapes.Add(newShape);
             }
-        _firstTime = false;
         }
 
         /// <summary>
