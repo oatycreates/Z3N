@@ -65,6 +65,11 @@ namespace Z3N
         public float teacherPlaybackStep = 0.03f;
 
         /// <summary>
+        /// Number of seconds to keep the drawing up after completion.
+        /// </summary>
+        public float teacherPlaybackStayTime = 5.0f;
+
+        /// <summary>
         /// Depth to draw the line at, later replace this with raycasting.
         /// </summary>
         public float lineDrawDepth = 1.0f;
@@ -277,6 +282,9 @@ namespace Z3N
             _lineEndWorldPt = worldPt;
         }
 
+        /// <summary>
+        /// Begins the process of playing back the teacher's drawing.
+        /// </summary>
         protected void StartTeacherPlayback()
         {
             ClearDrawnLine();
@@ -289,6 +297,10 @@ namespace Z3N
             }
         }
 
+        /// <summary>
+        /// Draws an individual line segment during the teacher's playback animation.
+        /// </summary>
+        /// <returns>Time to wait between each playback animation step.</returns>
         protected IEnumerator StepTeacherPlayback()
         {
             SLinePoint currPt = _linePoints[_teacherPlaybackProgress];
@@ -307,11 +319,25 @@ namespace Z3N
             }
             else
             {
-                // TODO: Report back to the manager to trigger drawing the next shape
+                // TODO: Report back to the manager to trigger drawing the next shape.
 
-                // Done playing back the line
-                _isPlayingBackDrawing = false;
+                // TODO: Once the whole drawing is done, flash up every shape for a few seconds and then hide.
+                
+                StartCoroutine(FinishTeacherPlayback());
             }
+        }
+
+        /// <summary>
+        /// Hides the teacher's line after it has been drawn fully and a short wait has elapsed.
+        /// </summary>
+        /// <returns>Time to wait before hiding the finished shape.</returns>
+        protected IEnumerator FinishTeacherPlayback()
+        {
+            yield return new WaitForSeconds(teacherPlaybackStayTime);
+            
+            // Done playing back the line, hide
+            ClearDrawnLine();
+            _isPlayingBackDrawing = false;
         }
 
         /// <summary>
