@@ -107,6 +107,7 @@ namespace Z3N
         {
             // Touch position in pixel coordinates
             Vector2 touchPos = Vector2.zero;
+            float touchPressureMult = 1.0f;
             bool isTouchDown = false;
             bool isTouchUp = false;
             
@@ -130,19 +131,29 @@ namespace Z3N
                 isTouchDown = firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary;
                 isTouchUp = firstTouch.phase == TouchPhase.Ended || firstTouch.phase == TouchPhase.Canceled;
                 touchPos = firstTouch.position;
+
+                if (firstTouch.maximumPossiblePressure > 0.0f)
+                {
+                    touchPressureMult = firstTouch.pressure / firstTouch.maximumPossiblePressure;
+                }
+                else
+                {
+                    // Simulate pressure as touch velocity
+                    touchPressureMult = 1.0f / firstTouch.deltaPosition.magnitude / firstTouch.deltaTime;
+                }
             }
 
             if (isTouchUp)
             {
                 // End the current shape
-                EndShape(touchPos);
+                EndShape(touchPos, touchPressureMult);
             }
             else if (isTouchDown)
             {
                 // Continue the current shape
                 if (Time.time - _lastLineRecordTime > inputSampleTime)
                 {
-                    AddLinePoint(touchPos);
+                    AddLinePoint(touchPos, touchPressureMult);
                     _lastLineRecordTime = Time.time;
                 }
             }
@@ -150,7 +161,7 @@ namespace Z3N
         #endregion
 
         #region Point drawing
-        protected void AddLinePoint(Vector2 a_screenPoint, bool a_isShapeEnd = false)
+        protected void AddLinePoint(Vector2 a_screenPoint, float a_touchPressureMult, bool a_isShapeEnd = false)
         {
             // Convert the screen point to a viewport point
             Vector2 viewPt = Camera.main.ScreenToViewportPoint(a_screenPoint);
@@ -169,15 +180,15 @@ namespace Z3N
             GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity);
 
             // Connect the line dots
-            DrawNewLinePointJoin(worldPt);
+            DrawNewLinePointJoin(worldPt, a_touchPressureMult);
 
             Debug.Log("Added point: " + newPt);
         }
 
-        protected void EndShape(Vector2 a_point)
+        protected void EndShape(Vector2 a_point, float a_touchPressureMult)
         {
             // Add that final point
-            AddLinePoint(a_point, true);
+            AddLinePoint(a_point, a_touchPressureMult, true);
 
             // TODO: If out of ink, time to compare score or show to student
         }
@@ -185,8 +196,9 @@ namespace Z3N
         /// <summary>
         /// Draws a new join between the last added point and the previous.
         /// </summary>
-        /// <param name="a_newWorldPoint"> Point to draw the line to.</param>
-        protected void DrawNewLinePointJoin(Vector3 a_newWorldPoint)
+        /// <param name="a_newWorldPoint">Point to draw the line to.</param>
+        /// <param name="a_touchPressureMult">Player touch pressure percentage.</param>
+        protected void DrawNewLinePointJoin(Vector3 a_newWorldPoint, float a_touchPressureMult)
         {
             if (_linePoints.Count <= 0)
             {
@@ -201,7 +213,7 @@ namespace Z3N
             _lineRenderer.SetPosition(_linePoints.Count - 1, a_newWorldPoint);
 
             // Simulate basic 'running out of ink'
-            _lineRenderer.SetWidth(0.01f, 1.0f / _linePoints.Count);
+            _lineRenderer.SetWidth(0.01f * a_touchPressureMult, 1.0f / _linePoints.Count * a_touchPressureMult);
 
             // Store last world point for drawing the curve
             _lineEndWorldPt = a_newWorldPoint;
