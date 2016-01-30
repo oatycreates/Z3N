@@ -53,7 +53,7 @@ LineRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 329f01d24545cff439d126e5fce52325, type: 2}
+  - {fileID: 2100000, guid: 4fa508474a0f4b14dbce12e94a8ac2d0, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -73,14 +73,14 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
-    startWidth: 1
-    endWidth: 1
+    startWidth: 0.01
+    endWidth: 0.01
     m_StartColor:
       serializedVersion: 2
-      rgba: 4278190335
+      rgba: 4294901969
     m_EndColor:
       serializedVersion: 2
-      rgba: 4278190335
+      rgba: 4294901969
   m_UseWorldSpace: 1
 --- !u!1001 &100100000
 Prefab:

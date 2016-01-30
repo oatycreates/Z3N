@@ -200,6 +200,9 @@ namespace Z3N
             _lineRenderer.SetVertexCount(_linePoints.Count);
             _lineRenderer.SetPosition(_linePoints.Count - 1, a_newWorldPoint);
 
+            // Simulate basic 'running out of ink'
+            _lineRenderer.SetWidth(0.01f, 1.0f / _linePoints.Count);
+
             // Store last world point for drawing the curve
             _lineEndWorldPt = a_newWorldPoint;
         }
