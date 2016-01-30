@@ -103,11 +103,6 @@ namespace Z3N
                     StartTeacherPlayback();
                 }
             }
-
-            if (Input.touchCount == 4 || Input.GetKeyUp(KeyCode.Escape))
-            {
-                Application.LoadLevel(0);
-            }
         }
         #endregion
 
