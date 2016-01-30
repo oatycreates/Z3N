@@ -222,24 +222,24 @@ namespace Z3N
                     }
                     else if (isTouchDown)
                     {
-                        // Continue the current shape
+                        // Sample at an interval
                         if (Time.time - _lastLineRecordTime > inputSampleTime)
                         {
-                            AddLinePoint(viewPt, touchPressureMult);
-                            _lastLineRecordTime = Time.time;
+                            // Prevent the player from drawing off the sand
+                            Vector3 v3ViewPt = new Vector3(viewPt.x, viewPt.y, lineDrawDepth);
+                            Ray viewRay = Camera.main.ViewportPointToRay(v3ViewPt);
+                            if (RayIsOnGround(viewRay, _lineRaycastDesired))
+                            {
+                                // Continue the current shape
+                                AddLinePoint(viewPt, touchPressureMult);
+                                _lastLineRecordTime = Time.time;
+                            }
+                            /*else if (_linePoints.Count > 0)
+                            {
+                                // Off the sand, end the current shape
+                                EndShape(viewPt, touchPressureMult);
+                            }*/
                         }
-                        // Prevent the player from drawing off the sand
-                        /*Vector3 v3ViewPt = new Vector3(viewPt.x, viewPt.y, lineDrawDepth);
-                        Ray viewRay = Camera.main.ViewportPointToRay(v3ViewPt);
-                        if (RayIsOnGround(viewRay, _lineRaycastDesired))
-                        {
-                            
-                        }
-                        else if (_linePoints.Count > 0)
-                        {
-                            // Off the sand, end the current shape
-                            EndShape(viewPt, touchPressureMult);
-                        }*/
                     }
                 }
             }
