@@ -41,6 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputSampleTime: 0.03
+  maxLineThickness: 3
   teacherPlaybackStep: 0.03
   lineDrawDepth: 1
   linePointPrefab: {fileID: 106398, guid: 411226cb5027c164d9c0dfa2d19293ac, type: 2}
@@ -74,8 +75,8 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
-    startWidth: 0.01
-    endWidth: 0.01
+    startWidth: 0.1
+    endWidth: 0.1
     m_StartColor:
       serializedVersion: 2
       rgba: 4294901969
@@ -94,6 +95,18 @@ Prefab:
       propertyPath: linePointPrefab
       value: 
       objectReference: {fileID: 106398, guid: 411226cb5027c164d9c0dfa2d19293ac, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Parameters.startWidth
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Parameters.endWidth
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxLineThickness
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 116052}

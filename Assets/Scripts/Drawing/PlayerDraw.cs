@@ -113,9 +113,6 @@ namespace Z3N
         /// </summary>
         public void DoneDrawingShape()
         {
-            // Turn off the old shape
-            _drawnShapes[_drawnShapes.Count - 1].SetIsActiveShape(false);
-
             // Move on to the next shape
             CreateNextDrawingShape();
         }

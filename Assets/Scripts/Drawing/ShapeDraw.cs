@@ -114,6 +114,12 @@ namespace Z3N
         /// </summary>
         private bool _isCurrentShape = false;
 
+        /// <summary>
+        /// Layers to accept when raycasting for checking player input.
+        /// Get 'DrawableArea'.
+        /// </summary>
+        private LayerMask _lineRaycastDesired = LayerMask.NameToLayer("DrawableArea");
+
         // Cached variables
         private LineRenderer _lineRenderer = null;
         private static GameObject _linePtHolder = null;
@@ -197,22 +203,43 @@ namespace Z3N
                     }
                 }
 
+                /*Ray tempRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 1.0f));
+                RaycastHit[] rays = Physics.RaycastAll(tempRay, 300.0f, (~_lineRaycastDesired));
+                Debug.DrawRay(tempRay.origin, tempRay.direction * 300.0f, rays.Length > 0 ? Color.green : Color.red);
+                for (int i = 0; i < rays.Length; ++i)
+                {
+                    Debug.Log("Hit " + rays[i].transform.gameObject.name);
+                }*/
+
                 // Prevent drawing during playback
                 if (!_isPlayingBackDrawing)
                 {
+                    Vector2 viewPt = Camera.main.ScreenToViewportPoint(touchPos);
                     if (isTouchUp)
                     {
                         // End the current shape
-                        EndShape(touchPos, touchPressureMult);
+                        EndShape(viewPt, touchPressureMult);
                     }
                     else if (isTouchDown)
                     {
                         // Continue the current shape
                         if (Time.time - _lastLineRecordTime > inputSampleTime)
                         {
-                            AddLinePoint(touchPos, touchPressureMult);
+                            AddLinePoint(viewPt, touchPressureMult);
                             _lastLineRecordTime = Time.time;
                         }
+                        // Prevent the player from drawing off the sand
+                        /*Vector3 v3ViewPt = new Vector3(viewPt.x, viewPt.y, lineDrawDepth);
+                        Ray viewRay = Camera.main.ViewportPointToRay(v3ViewPt);
+                        if (RayIsOnGround(viewRay, _lineRaycastDesired))
+                        {
+                            
+                        }
+                        else if (_linePoints.Count > 0)
+                        {
+                            // Off the sand, end the current shape
+                            EndShape(viewPt, touchPressureMult);
+                        }*/
                     }
                 }
             }
@@ -263,27 +290,27 @@ namespace Z3N
             }
         }
 
-        private void AddLinePoint(Vector2 a_screenPoint, float a_touchPressureMult, bool a_isShapeEnd = false)
+        private void AddLinePoint(Vector2 a_viewPt, float a_touchPressureMult, bool a_isShapeEnd = false)
         {
-            // Convert the screen point to a viewport point
-            Vector2 viewPt = Camera.main.ScreenToViewportPoint(a_screenPoint);
-
             // Save the point
-            SLinePoint newPt = new SLinePoint(viewPt, a_touchPressureMult, a_isShapeEnd);
+            SLinePoint newPt = new SLinePoint(a_viewPt, a_touchPressureMult, a_isShapeEnd);
             _linePoints.Add(newPt);
 
             // Connect the line dots
-            DrawNewLinePointJoin(viewPt, _linePoints.Count, a_touchPressureMult);
+            DrawNewLinePointJoin(a_viewPt, _linePoints.Count, a_touchPressureMult);
 
             Debug.Log("Added point: " + newPt);
         }
 
-        private void EndShape(Vector2 a_point, float a_touchPressureMult)
+        private void EndShape(Vector2 a_viewPoint, float a_touchPressureMult)
         {
             // Add that final point
-            AddLinePoint(a_point, a_touchPressureMult, true);
+            AddLinePoint(a_viewPoint, a_touchPressureMult, true);
 
             // TODO: If out of ink, time to compare score or show to student
+
+            // Notify the parent that this shape is done
+            _isCurrentShape = false;
             _parentDrawScript.DoneDrawingShape();
         }
 
@@ -302,26 +329,30 @@ namespace Z3N
             }
 
             // TODO: Use raycasting (mask out all non-ground) instead of view port projection.
-
-            // Map the viewport point to the world.
+            
+            // Map the viewport point to the world
             Vector3 v3ViewPt = new Vector3(a_newViewPt.x, a_newViewPt.y, lineDrawDepth);
-            Vector3 worldPt = Camera.main.ViewportToWorldPoint(v3ViewPt);
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.ViewportPointToRay(v3ViewPt), out hit, 1000.0f))
+            {
+                Vector3 worldPt = hit.point;
 
-            // Create a point to show the line
-            GameObject linePtObj = GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity) as GameObject;
-            linePtObj.transform.parent = _linePtHolderTrans;
+                // Create a point to show the line
+                GameObject linePtObj = GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity) as GameObject;
+                linePtObj.transform.parent = _linePtHolderTrans;
 
-            // TODO: Draw curved line using: http://www.habrador.com/tutorials/catmull-rom-splines/
+                // TODO: Draw curved line using: http://www.habrador.com/tutorials/catmull-rom-splines/
 
-            // Draw straight line between latest 2 points
-            _lineRenderer.SetVertexCount(a_newPtCount);
-            _lineRenderer.SetPosition(a_newPtCount - 1, worldPt);
+                // Draw straight line between latest 2 points
+                _lineRenderer.SetVertexCount(a_newPtCount);
+                _lineRenderer.SetPosition(a_newPtCount - 1, worldPt);
 
-            // Simulate basic 'running out of ink'
-            _lineRenderer.SetWidth(maxLineThickness * a_touchPressureMult, 1.0f / _linePoints.Count * a_touchPressureMult);
+                // Simulate basic 'running out of ink'
+                _lineRenderer.SetWidth(maxLineThickness * (1.0f / _linePoints.Count) * a_touchPressureMult, maxLineThickness * a_touchPressureMult);
 
-            // Store last world point for drawing the curve
-            _lineEndWorldPt = worldPt;
+                // Store last world point for drawing the curve
+                _lineEndWorldPt = worldPt;
+            }
         }
 
         /// <summary>
@@ -350,6 +381,20 @@ namespace Z3N
                 _isPlayingBackDrawing = false;
                 _parentDrawScript.DonePlayingBackShape();
             }
+        }
+
+        /// <summary>
+        /// Returns whether the input ray is hitting the desired object.
+        /// </summary>
+        /// <param name="a_viewRay"></param>
+        /// <param name="a_desiredLayer"></param>
+        /// <returns></returns>
+        private bool RayIsOnGround(Ray a_viewRay, LayerMask a_desiredLayer)
+        {
+            RaycastHit hitInfo = new RaycastHit();
+            // Find the first object hit
+            bool hitSomething = Physics.Raycast(a_viewRay, out hitInfo, 1000.0f);
+            return hitSomething ? hitInfo.transform.gameObject.layer.Equals(a_desiredLayer.value) : false;
         }
         #endregion
     }

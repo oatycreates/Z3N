@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3344508}
   - 64: {fileID: 6447968}
   - 23: {fileID: 2384098}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
