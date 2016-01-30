@@ -58,7 +58,6 @@ namespace Z3N
         /// How often to sample the player's drag input.
         /// </summary>
         public float inputSampleTime = 0.03f;
-
         /// <summary>
         /// Speed that the teacher playback lerps between each point per second.
         /// </summary>
@@ -203,7 +202,7 @@ namespace Z3N
                 StepTeacherShapePlayback();
             }
 
-            if (_isCurrentShape)
+            if (_isCurrentShape && _parentDrawScript.gameObject.activeSelf && _parentDrawScript.isActiveAndEnabled && _parentDrawScript.InkNotEmpty)
             {
                 // Touch position in pixel coordinates
                 Vector2 touchPos = Vector2.zero;
@@ -229,6 +228,7 @@ namespace Z3N
                     // Draw only using the first touch
                     Touch firstTouch = Input.touches[0];
                     isTouchDown = firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary;
+                    PlayerDraw.s_isDrawing = isTouchDown;
                     isTouchUp = firstTouch.phase == TouchPhase.Ended || firstTouch.phase == TouchPhase.Canceled;
                     touchPos = firstTouch.position;
 
@@ -351,6 +351,15 @@ namespace Z3N
                 _linePlaybackProgress = 1.0f;
                 _lastPlaybackViewPt = _linePoints[0].viewPos;
             }
+        }
+
+        /// <summary>
+        /// Whether this shape has any content in it.
+        /// </summary>
+        /// <returns>True if started, false if not.</returns>
+        public bool GetShapeHasStarted()
+        {
+            return _linePoints.Count > 0;
         }
 
         private void AddLinePoint(Vector2 a_viewPt, float a_touchPressureMult, bool a_isShapeEnd = false)

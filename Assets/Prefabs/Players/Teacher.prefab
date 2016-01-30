@@ -78,7 +78,7 @@ GameObject:
   - 114: {fileID: 11487750}
   m_Layer: 0
   m_Name: Teacher
-  m_TagString: Untagged
+  m_TagString: Teacher
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -368,7 +368,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teacherPlaybackStayTime: 1
+  lineCol: {r: 0.81960785, g: 0, b: 1, a: 1}
   followObjTrans: {fileID: 419666}
+  gameManScript: {fileID: 0}
   followObjSpeed: 5
   isTeacher: 1
   shapePrefab: {fileID: 116052, guid: ebaea2e83d807574eb6d4828e594a7ed, type: 2}

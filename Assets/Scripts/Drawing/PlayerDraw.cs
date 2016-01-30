@@ -19,11 +19,33 @@ namespace Z3N
         /// Number of seconds to keep the drawing up after completion.
         /// </summary>
         public float teacherPlaybackStayTime = 5.0f;
+        /// <summary>
+        /// Is the player currently drawing a line
+        /// </summary>
+        static public bool s_isDrawing;
+        /// <summary>
+        /// Line colour to use.
+        /// </summary>
+        public Color lineCol = Color.magenta;
 
         /// <summary>
         /// Object that is following the current shape.
         /// </summary>
         public Transform followObjTrans = null;
+        /// <summary>
+        /// The ink bar
+        /// </summary>
+        [SerializeField]
+        private UnityEngine.UI.Slider _inkBar;
+        /// <summary>
+        /// The total number of ink the can be used
+        /// </summary>
+        [SerializeField]
+        private int _inkCount = 5;
+        /// <summary>
+        /// Handle to the game manager.
+        /// </summary>
+        public GameManager gameManScript = null;
 
         /// <summary>
         /// Lerp value per second.
@@ -56,8 +78,22 @@ namespace Z3N
         private int _teacherShapePlaybackProgress = 0;
 
         // Cached variables
-        private static GameObject _linePtHolder = null;
-        private static Transform _linePtHolderTrans = null;
+        private static GameObject _shapeHolder = null;
+        private static Transform _shapeHolderTrans = null;
+        #endregion
+
+        #region Getter/Setter
+        public bool GetIsPlayingBack()
+        {
+            return _isPlayingBackDrawing;
+        }
+        /// <summary>
+        /// Return true if there is more ink the player can use
+        /// </summary>
+        public bool InkNotEmpty
+        {
+            get { return (_inkBar.value > 0.01f); }
+        }
         #endregion
 
         #region Unity code
@@ -71,10 +107,10 @@ namespace Z3N
             _isPlayingBackDrawing = false;
 
             // Create line point holder if not around
-            if (!_linePtHolder)
+            if (!_shapeHolder)
             {
-                _linePtHolder = new GameObject("LinePointHolder");
-                _linePtHolderTrans = _linePtHolder.transform;
+                _shapeHolder = new GameObject("ShapeHolder");
+                _shapeHolderTrans = _shapeHolder.transform;
             }
 
             // Start the first shape
@@ -94,20 +130,39 @@ namespace Z3N
         /// </summary>
         void Update()
         {
-            // Simple code for the moment to simulate the triggering of the teacher's playback
-            if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
+            bool isInteracting = (Input.touchCount > 1 || Input.GetMouseButton(0));
+            if(_inkBar.value > 0.001f && isInteracting)
             {
-                if (isTeacher && !_isPlayingBackDrawing)
+                _inkBar.value -= (Time.deltaTime / _inkCount);
+            }
+            // Simple code for the moment to simulate the triggering of the teacher's playback
+            /*
+            if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
+            if (gameObject.activeSelf && isActiveAndEnabled)
+            {
+                // Simple code for the moment to simulate the triggering of the teacher's playback
+                if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
                 {
-                    // Editor to trigger teacher playback
-                    StartTeacherPlayback();
+                    if (isTeacher && !_isPlayingBackDrawing)
+                    {
+                        // Editor to trigger teacher playback
+                        StartTeacherPlayback();
+                    }
                 }
             }
-
-            if (Input.touchCount == 4 || Input.GetKeyUp(KeyCode.Escape))
+            */
+            if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
             {
                 Application.LoadLevel(0);
             }
+        }
+
+        /// <summary>
+        /// Resets the inkbar on enable
+        /// </summary>
+        void OnEnable()
+        {
+            _inkBar.value = 1.0f;
         }
         #endregion
 
@@ -136,20 +191,30 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
-            ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
-            newShape.SetDrawScriptHandle(this);
-            newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
-            newShape.SetIsActiveShape(true);
-            newShapeObj.transform.parent = _linePtHolderTrans;
+            if (_inkBar.value > 0.01f)
+            {
+                // Set up the new shape
+                GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
+                ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
+                newShape.SetDrawScriptHandle(this);
+                newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
+                newShape.SetIsActiveShape(true);
+                newShapeObj.transform.parent = _shapeHolderTrans;
 
-            _drawnShapes.Add(newShape);
+                // Set line colour
+                LineRenderer lineRen = newShapeObj.GetComponent<LineRenderer>();
+                lineRen.SetColors(lineCol, lineCol);
+                Renderer ren = newShapeObj.GetComponent<Renderer>();
+                ren.material.color = lineCol;
+
+                _drawnShapes.Add(newShape);
+            }
         }
 
         /// <summary>
         /// Begins the process of playing back the teacher's drawing.
         /// </summary>
-        private void StartTeacherPlayback()
+        public void StartTeacherPlayback()
         {
             ClearDrawnLines();
             _teacherShapePlaybackProgress = 0;
@@ -166,9 +231,19 @@ namespace Z3N
         /// </summary>
         private void StartNextTeacherPlayback()
         {
+            Debug.Log(_teacherShapePlaybackProgress + " " + _drawnShapes.Count);
             if (_teacherShapePlaybackProgress < _drawnShapes.Count)
             {
-                _drawnShapes[_teacherShapePlaybackProgress].StartTeacherShapePlayback();
+                // Only animate valid shapes
+                if (_drawnShapes[_teacherShapePlaybackProgress].GetShapeHasStarted())
+                {
+                    _drawnShapes[_teacherShapePlaybackProgress].StartTeacherShapePlayback();
+                }
+                else
+                {
+                    // Go to the next shape
+                    DonePlayingBackShape();
+                }
             }
             else
             {
@@ -188,6 +263,8 @@ namespace Z3N
             // Done playing back the line, hide
             ClearDrawnLines();
             _isPlayingBackDrawing = false;
+
+            gameManScript.SwitchToOtherPlayer(isTeacher);
         }
 
         /// <summary>
