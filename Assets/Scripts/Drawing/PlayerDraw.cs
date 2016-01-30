@@ -12,7 +12,6 @@ using System.Collections.Generic;
 
 namespace Z3N
 {
-    [RequireComponent(typeof(LineRenderer))]
     public class PlayerDraw : MonoBehaviour
     {
         #region Variables
