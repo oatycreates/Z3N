@@ -42,7 +42,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSampleTime: 0.03
   maxLineThickness: 3
-  teacherPlaybackStep: 0.03
+  teacherPlaybackStep: 0.075
   lineDrawDepth: 1
   linePointPrefab: {fileID: 106398, guid: 411226cb5027c164d9c0dfa2d19293ac, type: 2}
 --- !u!120 &12074786
@@ -124,6 +124,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Positions.Array.data[1].z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: teacherPlaybackStep
+      value: 0.075
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

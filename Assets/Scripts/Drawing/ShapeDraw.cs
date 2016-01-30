@@ -90,6 +90,11 @@ namespace Z3N
         private Transform _followObjTrans = null;
 
         /// <summary>
+        /// Start position of the follow object.
+        /// </summary>
+        private Vector3 _followObjStartPos = Vector3.zero;
+
+        /// <summary>
         /// Lerp value per second.
         /// </summary>
         private float _followObjSpeed = 1.0f;
@@ -278,7 +283,7 @@ namespace Z3N
             
             // Start the follow person at their starting position
             _lineEndWorldPt = _followObjTrans.position;
-            UpdatePlayerFollow();
+            _followObjStartPos = _followObjTrans.position;
         }
 
         /// <summary>
@@ -408,6 +413,7 @@ namespace Z3N
             {
                 // Report back to the manager to trigger drawing the next shape.
                 _isPlayingBackDrawing = false;
+                UpdatePlayerFollow();
                 _parentDrawScript.DonePlayingBackShape();
             }
         }
@@ -441,7 +447,7 @@ namespace Z3N
                 else if (_followObjTrans.gameObject.name.Contains("Teacher"))
                 {
                     // Hide the teacher's finger unless it is playing back
-                    _followObjTrans.position = new Vector3(0, -1000, 0);
+                    _followObjTrans.position = _followObjStartPos;
                 }
             }
         }
