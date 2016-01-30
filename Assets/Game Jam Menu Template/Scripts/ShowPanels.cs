@@ -14,6 +14,8 @@ public class ShowPanels : MonoBehaviour {
     public GameObject creditsPanel;                         //Store a reference to the Game Object CreditsPanel
     public GameObject instructionPanel;                     //Store a reference to the Game Object InfoPanel 
     public GameObject instructionTint;                      //Store a reference to the Game Object InfoTint 
+    public GameObject scorePanel;                           //Store a reference to the Game Object ScorePanel
+    public GameObject scoreTint;                            //Store a reference to the Game Object ScoreTint
 
     public bool waitForPanel;                               //Store a reference for whether or not a panel must be closed before unpausing
 
@@ -118,6 +120,20 @@ public class ShowPanels : MonoBehaviour {
         waitForPanel = false;
         //Set time.timescale to 1, this will cause animations and physics to continue updating at regular speed
         Time.timeScale = 1;
+    }
+
+    //Call this function to activate and display the Score panel during the main menu
+    public void ShowScorePanel()
+    {
+        scorePanel.SetActive(true);
+        scoreTint.SetActive(true);
+    }
+
+    //Call this function to deactivate and hide the Score panel during the main menu
+    public void HideScorePanel()
+    {
+        scorePanel.SetActive(false);
+        scoreTint.SetActive(false);
     }
 
 }
