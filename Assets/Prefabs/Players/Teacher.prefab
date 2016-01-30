@@ -41,7 +41,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputSampleTime: 0.03
+  teacherPlaybackStep: 0.03
   lineDrawDepth: 1
+  isTeacher: 1
   linePointPrefab: {fileID: 106398, guid: 411226cb5027c164d9c0dfa2d19293ac, type: 2}
 --- !u!120 &12036130
 LineRenderer:

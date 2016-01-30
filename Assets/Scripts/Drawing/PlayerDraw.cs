@@ -24,16 +24,25 @@ namespace Z3N
             /// <summary>
             /// Viewport position of the point.
             /// </summary>
-            Vector2 viewPos;
-            bool isShapeEnd;
+            public Vector2 viewPos;
+            /// <summary>
+            /// How hard the player was pressing when drawing this point.
+            /// </summary>
+            public float touchPressureMult;
+            /// <summary>
+            /// Whether this point is the end of a shape.
+            /// </summary>
+            public bool isShapeEnd;
             /// <summary>
             /// Creates the line point structure.
             /// </summary>
             /// <param name="a_viewPos">Viewport point.</param>
+            /// <param name="a_touchPressureMult">How hard the player was pressing when drawing this point.</param>
             /// <param name="a_isShapeEnd">True if the point is the last one in the shape.</param>
-            public SLinePoint(Vector2 a_viewPos, bool a_isShapeEnd = false)
+            public SLinePoint(Vector2 a_viewPos, float a_touchPressureMult, bool a_isShapeEnd = false)
             {
                 viewPos = a_viewPos;
+                touchPressureMult = a_touchPressureMult;
                 isShapeEnd = a_isShapeEnd;
             }
 
@@ -48,12 +57,22 @@ namespace Z3N
         /// <summary>
         /// How often to sample the player's drag input.
         /// </summary>
-        public float inputSampleTime = 0.1f;
+        public float inputSampleTime = 0.03f;
+
+        /// <summary>
+        /// Time between each drawn teacher point.
+        /// </summary>
+        public float teacherPlaybackStep = 0.03f;
 
         /// <summary>
         /// Depth to draw the line at, later replace this with raycasting.
         /// </summary>
         public float lineDrawDepth = 1.0f;
+
+        /// <summary>
+        /// Whether this player is the teacher (game host).
+        /// </summary>
+        public bool isTeacher = true;
 
         /// <summary>
         /// Rendering 
@@ -75,8 +94,15 @@ namespace Z3N
         /// </summary>
         protected Vector3 _lineEndWorldPt = Vector3.zero;
 
+        /// <summary>
+        /// How far along the teacher playback is.
+        /// </summary>
+        private int _teacherPlaybackProgress = 0;
+
         // Cached variables
         private LineRenderer _lineRenderer = null;
+        private static GameObject _linePtHolder = null;
+        private static Transform _linePtHolderTrans = null;
         #endregion
 
         #region Unity code
@@ -90,6 +116,16 @@ namespace Z3N
             _lineEndWorldPt = Vector3.zero;
             _linePoints = new List<SLinePoint>();
             _lineRenderer = GetComponent<LineRenderer>();
+
+            // Create line point holder if not around
+            if (!_linePtHolder)
+            {
+                _linePtHolder = new GameObject("LinePointHolder");
+                _linePtHolderTrans = _linePtHolder.transform;
+            }
+
+            // Clear the line
+            ClearDrawnLine();
         }
 
         /// <summary>
@@ -143,6 +179,16 @@ namespace Z3N
                 }
             }
 
+            // Simple code for the moment to simulate the triggering of the teacher's playback
+            if (Input.touchCount > 3 || Input.GetKeyUp(KeyCode.R))
+            {
+                if (isTeacher)
+                {
+                    // Editor to trigger teacher playback
+                    StartTeacherPlayback();
+                }
+            }
+
             if (isTouchUp)
             {
                 // End the current shape
@@ -160,27 +206,18 @@ namespace Z3N
         }
         #endregion
 
-        #region Point drawing
+        #region Line drawing
         protected void AddLinePoint(Vector2 a_screenPoint, float a_touchPressureMult, bool a_isShapeEnd = false)
         {
             // Convert the screen point to a viewport point
             Vector2 viewPt = Camera.main.ScreenToViewportPoint(a_screenPoint);
 
             // Save the point
-            SLinePoint newPt = new SLinePoint(viewPt, a_isShapeEnd);
+            SLinePoint newPt = new SLinePoint(viewPt, a_touchPressureMult, a_isShapeEnd);
             _linePoints.Add(newPt);
 
-            // TODO: Use raycasting (mask out all non-ground) instead of view port projection.
-
-            // Map the viewport point to the world.
-            Vector3 v3ViewPt = new Vector3(viewPt.x, viewPt.y, lineDrawDepth);
-            Vector3 worldPt = Camera.main.ViewportToWorldPoint(v3ViewPt);
-
-            // Create a point to show the line
-            GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity);
-
             // Connect the line dots
-            DrawNewLinePointJoin(worldPt, a_touchPressureMult);
+            DrawNewLinePointJoin(viewPt, _linePoints.Count, a_touchPressureMult);
 
             Debug.Log("Added point: " + newPt);
         }
@@ -197,26 +234,78 @@ namespace Z3N
         /// Draws a new join between the last added point and the previous.
         /// </summary>
         /// <param name="a_newWorldPoint">Point to draw the line to.</param>
+        /// <param name="a_newPtCount">Current line point count.</param>
         /// <param name="a_touchPressureMult">Player touch pressure percentage.</param>
-        protected void DrawNewLinePointJoin(Vector3 a_newWorldPoint, float a_touchPressureMult)
+        protected void DrawNewLinePointJoin(Vector3 a_newViewPt, int a_newPtCount, float a_touchPressureMult)
         {
             if (_linePoints.Count <= 0)
             {
                 Debug.LogWarning("Unable to draw line join between 0 points!");
                 return;
             }
+            
+            // TODO: Use raycasting (mask out all non-ground) instead of view port projection.
+
+            // Map the viewport point to the world.
+            Vector3 v3ViewPt = new Vector3(a_newViewPt.x, a_newViewPt.y, lineDrawDepth);
+            Vector3 worldPt = Camera.main.ViewportToWorldPoint(v3ViewPt);
+
+            // Create a point to show the line
+            GameObject linePtObj = GameObject.Instantiate(linePointPrefab, worldPt, Quaternion.identity) as GameObject;
+            linePtObj.transform.parent = _linePtHolderTrans;
 
             // TODO: Draw curved line using: http://www.habrador.com/tutorials/catmull-rom-splines/
 
             // Draw straight line between latest 2 points
-            _lineRenderer.SetVertexCount(_linePoints.Count);
-            _lineRenderer.SetPosition(_linePoints.Count - 1, a_newWorldPoint);
+            _lineRenderer.SetVertexCount(a_newPtCount);
+            _lineRenderer.SetPosition(a_newPtCount - 1, worldPt);
 
             // Simulate basic 'running out of ink'
             _lineRenderer.SetWidth(0.01f * a_touchPressureMult, 1.0f / _linePoints.Count * a_touchPressureMult);
 
             // Store last world point for drawing the curve
-            _lineEndWorldPt = a_newWorldPoint;
+            _lineEndWorldPt = worldPt;
+        }
+
+        protected void StartTeacherPlayback()
+        {
+            ClearDrawnLine();
+            _teacherPlaybackProgress = 0;
+
+            if (_linePoints.Count > 0)
+            {
+                StartCoroutine(StepTeacherPlayback());
+            }
+        }
+
+        protected IEnumerator StepTeacherPlayback()
+        {
+            SLinePoint currPt = _linePoints[_teacherPlaybackProgress];
+
+            // Draw each line point
+            DrawNewLinePointJoin(currPt.viewPos, _teacherPlaybackProgress + 1, currPt.touchPressureMult);
+
+            ++_teacherPlaybackProgress;
+
+            // Repeat until drawing is done
+            if (_teacherPlaybackProgress < _linePoints.Count)
+            {
+                // Wait before replaying
+                yield return new WaitForSeconds(teacherPlaybackStep);
+                StartCoroutine(StepTeacherPlayback());
+            }
+            else
+            {
+                // TODO: Report back to the manager to trigger drawing the next shape
+            }
+        }
+
+        /// <summary>
+        /// Clears the current line renderer.
+        /// </summary>
+        protected void ClearDrawnLine()
+        {
+            _lineRenderer.SetVertexCount(0);
         }
         #endregion
     }

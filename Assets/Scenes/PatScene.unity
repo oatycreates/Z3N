@@ -166,6 +166,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11487750, guid: 4242d6c200e3ae647bee795c92982f26, type: 2}
+      propertyPath: teacherPlaybackStep
+      value: 0.03
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4242d6c200e3ae647bee795c92982f26, type: 2}
   m_IsPrefabParent: 0
