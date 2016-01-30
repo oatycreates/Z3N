@@ -161,7 +161,7 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            if (_inkBar.value > 0.008f)
+            if (_inkBarMod > 0.008f)
             {
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
                 ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
