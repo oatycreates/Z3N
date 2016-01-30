@@ -131,6 +131,7 @@ namespace Z3N
         /// </summary>
         void Update()
         {
+<<<<<<< HEAD
             if(_inkBarMod < _inkBar.value)
             {
                 _inkBar.value -= (1.0f / (_shapeNumCap * 100));
@@ -138,7 +139,9 @@ namespace Z3N
             // Simple code for the moment to simulate the triggering of the teacher's playback
             /*
             if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
+=======
             if (gameObject.activeSelf && isActiveAndEnabled)
+>>>>>>> origin/patrick
             {
                 // Simple code for the moment to simulate the triggering of the teacher's playback
                 if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
@@ -150,11 +153,14 @@ namespace Z3N
                     }
                 }
             }
+<<<<<<< HEAD
             */
             if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
             {
                 Application.LoadLevel(0);
             }
+=======
+>>>>>>> origin/patrick
         }
         #endregion
 
@@ -183,27 +189,38 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            if(_inkBarMod > 0.008f)
+<<<<<<< HEAD
+            if (_inkBarMod > 0.008f)
             {
-                // Set up the new shape
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
                 ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
                 newShape.SetDrawScriptHandle(this);
                 newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
                 newShape.SetIsActiveShape(true);
-                newShapeObj.transform.parent = _shapeHolderTrans;
-
-                // Set line colour
-                LineRenderer lineRen = newShapeObj.GetComponent<LineRenderer>();
-                lineRen.SetColors(lineCol, lineCol);
-                Renderer ren = newShapeObj.GetComponent<Renderer>();
-                ren.material.color = lineCol;
+                newShapeObj.transform.parent = _linePtHolderTrans;
 
                 _drawnShapes.Add(newShape);
                 if (!_firstTime)
                     _inkBarMod = _inkBar.value - (1.0f / _shapeNumCap);
             }
-        _firstTime = false;
+            _firstTime = false;
+=======
+            // Set up the new shape
+            GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
+            ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
+            newShape.SetDrawScriptHandle(this);
+            newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
+            newShape.SetIsActiveShape(true);
+            newShapeObj.transform.parent = _shapeHolderTrans;
+
+            // Set line colour
+            LineRenderer lineRen = newShapeObj.GetComponent<LineRenderer>();
+            lineRen.SetColors(lineCol, lineCol);
+            Renderer ren = newShapeObj.GetComponent<Renderer>();
+            ren.material.color = lineCol;
+
+            _drawnShapes.Add(newShape);
+>>>>>>> origin/patrick
         }
 
         /// <summary>

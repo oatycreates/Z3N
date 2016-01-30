@@ -19,10 +19,7 @@ namespace Z3N
         /// Number of seconds to keep the drawing up after completion.
         /// </summary>
         public float teacherPlaybackStayTime = 5.0f;
-        /// <summary>
-        /// Is the player currently drawing a line
-        /// </summary>
-        static public bool s_isDrawing;
+
         /// <summary>
         /// Line colour to use.
         /// </summary>
@@ -32,24 +29,7 @@ namespace Z3N
         /// Object that is following the current shape.
         /// </summary>
         public Transform followObjTrans = null;
-        /// <summary>
-        /// The ink bar
-        /// </summary>
-        [SerializeField]
-        private UnityEngine.UI.Slider _inkBar;
-        /// <summary>
-        /// Used to modify the ink bar over time;
-        /// </summary>
-        private float _inkBarMod = 1.0f;
-        /// <summary>
-        /// Is the first time running (sorry Pat)
-        /// </summary>
-        private bool _firstTime = true;
-        /// <summary>
-        /// The total number of shapes that can be created
-        /// </summary>
-        [SerializeField]
-        private int _shapeNumCap = 6;
+
         /// <summary>
         /// Handle to the game manager.
         /// </summary>
@@ -131,13 +111,6 @@ namespace Z3N
         /// </summary>
         void Update()
         {
-            if(_inkBarMod < _inkBar.value)
-            {
-                _inkBar.value -= (1.0f / (_shapeNumCap * 100));
-            }
-            // Simple code for the moment to simulate the triggering of the teacher's playback
-            /*
-            if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
             if (gameObject.activeSelf && isActiveAndEnabled)
             {
                 // Simple code for the moment to simulate the triggering of the teacher's playback
@@ -149,11 +122,6 @@ namespace Z3N
                         StartTeacherPlayback();
                     }
                 }
-            }
-            */
-            if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
-            {
-                Application.LoadLevel(0);
             }
         }
         #endregion
@@ -183,27 +151,21 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            if(_inkBarMod > 0.008f)
-            {
-                // Set up the new shape
-                GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
-                ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
-                newShape.SetDrawScriptHandle(this);
-                newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
-                newShape.SetIsActiveShape(true);
-                newShapeObj.transform.parent = _shapeHolderTrans;
+            // Set up the new shape
+            GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
+            ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
+            newShape.SetDrawScriptHandle(this);
+            newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
+            newShape.SetIsActiveShape(true);
+            newShapeObj.transform.parent = _shapeHolderTrans;
 
-                // Set line colour
-                LineRenderer lineRen = newShapeObj.GetComponent<LineRenderer>();
-                lineRen.SetColors(lineCol, lineCol);
-                Renderer ren = newShapeObj.GetComponent<Renderer>();
-                ren.material.color = lineCol;
+            // Set line colour
+            LineRenderer lineRen = newShapeObj.GetComponent<LineRenderer>();
+            lineRen.SetColors(lineCol, lineCol);
+            Renderer ren = newShapeObj.GetComponent<Renderer>();
+            ren.material.color = lineCol;
 
-                _drawnShapes.Add(newShape);
-                if (!_firstTime)
-                    _inkBarMod = _inkBar.value - (1.0f / _shapeNumCap);
-            }
-        _firstTime = false;
+            _drawnShapes.Add(newShape);
         }
 
         /// <summary>
