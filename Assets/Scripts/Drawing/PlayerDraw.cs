@@ -133,7 +133,7 @@ namespace Z3N
         {
             if(_inkBarMod < _inkBar.value)
             {
-                _inkBar.value -= (1.0f / (_shapeNumCap * 100));
+                _inkBar.value -= (1.0f / (_shapeNumCap * 50));
             }
             // Simple code for the moment to simulate the triggering of the teacher's playback
             /*
@@ -183,8 +183,10 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            if(_inkBarMod > 0.008f)
+            if (_inkBarMod > 0.01f)
             {
+                if (!_firstTime)
+                    _inkBarMod = _inkBar.value - (1.0f / _shapeNumCap);
                 // Set up the new shape
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
                 ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
@@ -200,8 +202,6 @@ namespace Z3N
                 ren.material.color = lineCol;
 
                 _drawnShapes.Add(newShape);
-                if (!_firstTime)
-                    _inkBarMod = _inkBar.value - (1.0f / _shapeNumCap);
             }
         _firstTime = false;
         }
