@@ -129,6 +129,13 @@ MonoBehaviour:
   followObjTrans: {fileID: 407886}
   _inkBar: {fileID: 0}
   _inkCount: 5
+  _inkSprites:
+  - {fileID: 21300000, guid: 57e3e9740d7a72c488669f050a5163d8, type: 3}
+  - {fileID: 21300000, guid: 637f4da558ce0004a8376b8e8348b0b1, type: 3}
+  - {fileID: 21300000, guid: 0a581563c87ccdf44bd20d11b365e26c, type: 3}
+  - {fileID: 21300000, guid: 8a1308fca6b34ef48961c05d30b95201, type: 3}
+  - {fileID: 21300000, guid: 6e25889c965df514c878eaf45206d206, type: 3}
+  _yinYangImage: {fileID: 0}
   gameManScript: {fileID: 0}
   followObjSpeed: 5
   isTeacher: 0
