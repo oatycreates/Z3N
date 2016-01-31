@@ -101,6 +101,10 @@ namespace Z3N
             {
                 Debug.Log("Show student menu");
                 studentReadyBtn.SetActive(true);
+
+                //Disable teacher script
+                teacherScript.ClearDrawnLines();
+                teacherScript.enabled = false;
             }
             else if (studentScript.enabled)
             {
