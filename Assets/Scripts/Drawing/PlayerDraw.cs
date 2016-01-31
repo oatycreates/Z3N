@@ -163,7 +163,7 @@ namespace Z3N
             }
             */
             Debug.Log(_inkBar.value);
-            _inkRemaining = Mathf.RoundToInt(_inkBar.value * _inkCount);
+            _inkRemaining = Mathf.RoundToInt(_inkBar.value * _inkCount * 2);
 
             if (Mathf.RoundToInt(_inkRemaining) > 0)
             _yinYangImage.sprite = _inkSprites[_inkRemaining - 1];

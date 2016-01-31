@@ -102,11 +102,16 @@ MonoBehaviour:
   _inkBar: {fileID: 0}
   _inkCount: 5
   _inkSprites:
+  - {fileID: 21300000, guid: 29011d511e38fb841a263582a40ccf79, type: 3}
+  - {fileID: 21300000, guid: aa86f67d3bd5ea0439c622e9d31f9b4a, type: 3}
+  - {fileID: 21300000, guid: e441143f06eaa1a44a1d5ef1979c5f81, type: 3}
+  - {fileID: 21300000, guid: bd96b88dc355dc148b49cf9269ee33ca, type: 3}
+  - {fileID: 21300000, guid: bc511d0d2c0ea144a94febba61e62c67, type: 3}
+  - {fileID: 21300000, guid: 6c1da6baef6680441835bec1a9611b49, type: 3}
+  - {fileID: 21300000, guid: 8f5dffb8e6bb3e042b0c24d25e88dc82, type: 3}
+  - {fileID: 21300000, guid: 7572887c952fa294cb5f045dff8fcf7d, type: 3}
+  - {fileID: 21300000, guid: 7ecf12712a6466446a6443dd3efc062f, type: 3}
   - {fileID: 21300000, guid: 57e3e9740d7a72c488669f050a5163d8, type: 3}
-  - {fileID: 21300000, guid: 637f4da558ce0004a8376b8e8348b0b1, type: 3}
-  - {fileID: 21300000, guid: 0a581563c87ccdf44bd20d11b365e26c, type: 3}
-  - {fileID: 21300000, guid: 8a1308fca6b34ef48961c05d30b95201, type: 3}
-  - {fileID: 21300000, guid: 6e25889c965df514c878eaf45206d206, type: 3}
   _yinYangImage: {fileID: 0}
   gameManScript: {fileID: 0}
   followObjSpeed: 1
