@@ -507,7 +507,6 @@ namespace Z3N
                 }
                 else// if (_followObjTrans.gameObject.name.Contains("Teacher"))
                 {
-                    Debug.Log(_followObjStartPos);
                     // Hide the teacher's finger unless it is playing back
                     _followObjTrans.position = _followObjStartPos;
                 }
