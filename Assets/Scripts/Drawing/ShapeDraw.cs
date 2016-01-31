@@ -9,6 +9,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace Z3N
 {
@@ -152,7 +153,7 @@ namespace Z3N
         /// Layers to accept when raycasting for checking player input.
         /// Get 'DrawableArea'.
         /// </summary>
-        private LayerMask _lineRaycastDesired = LayerMask.NameToLayer("DrawableArea");
+        private LayerMask _lineRaycastDesired;
 
         // Cached variables
         private LineRenderer _lineRenderer = null;
@@ -172,6 +173,8 @@ namespace Z3N
             _isPlayingBackDrawing = false;
             _linePoints = new List<SLinePoint>();
             _lineRenderer = GetComponent<LineRenderer>();
+
+            _lineRaycastDesired = LayerMask.NameToLayer("DrawableArea");
 
             // Create line point holder if not around
             if (!_linePtHolder)
@@ -309,14 +312,14 @@ namespace Z3N
         /// </summary>
         /// <param name="a_followObjTrans">Transform</param>
         /// <param name="a_followSpeed">Speed</param>
-        public void SetFollowObjHandle(Transform a_followObjTrans, float a_followSpeed)
+        public void SetFollowObjHandle(Transform a_followObjTrans, float a_followSpeed, Vector3 a_resetPos)
         {
             _followObjTrans = a_followObjTrans;
             _followObjSpeed = a_followSpeed;
             
             // Start the follow person at their starting position
             _lineEndWorldPt = _followObjTrans.position;
-            _followObjStartPos = _followObjTrans.position;
+            _followObjStartPos = a_resetPos;
         }
 
         /// <summary>
@@ -360,6 +363,18 @@ namespace Z3N
         public bool GetShapeHasStarted()
         {
             return _linePoints.Count > 0;
+        }
+
+        /// <summary>
+        /// Instantly throw up the shape.
+        /// </summary>
+        public void DrawShapeInstant()
+        {
+            foreach (SLinePoint line in _linePoints)
+            {
+                // Connect the line dots
+                DrawNewLinePointJoin(line.viewPos, _linePoints.Count, line.touchPressureMult);
+            }
         }
 
         private void AddLinePoint(Vector2 a_viewPt, float a_touchPressureMult, bool a_isShapeEnd = false)
@@ -436,29 +451,32 @@ namespace Z3N
         /// </summary>
         private void StepTeacherShapePlayback()
         {
-            SLinePoint currPt = _linePoints[_teacherPlaybackProgress];
-
-            // Lerp from current point to new point
-            _linePlaybackProgress += teacherPlaybackRate * Time.deltaTime / Vector2.Distance(_lastPlaybackViewPt, currPt.viewPos);
-            _linePlaybackProgress = Mathf.Min(_linePlaybackProgress, 1.0f);
-            Vector2 newViewPos = Vector2.Lerp(_lastPlaybackViewPt, currPt.viewPos, _linePlaybackProgress);
-
-            // Draw each line point
-            DrawNewLinePointJoin(newViewPos, _teacherPlaybackProgress + 1, currPt.touchPressureMult);
-
-            if (_linePlaybackProgress >= 1.0f)
+            if (_isPlayingBackDrawing)
             {
-                _linePlaybackProgress = 0.0f;
-                _lastPlaybackViewPt = currPt.viewPos;
-                
-                // Repeat until drawing is done
-                ++_teacherPlaybackProgress;
-                if (_teacherPlaybackProgress >= _linePoints.Count)
+                SLinePoint currPt = _linePoints[_teacherPlaybackProgress];
+
+                // Lerp from current point to new point
+                _linePlaybackProgress += teacherPlaybackRate * Time.deltaTime / Vector2.Distance(_lastPlaybackViewPt, currPt.viewPos);
+                _linePlaybackProgress = Mathf.Min(_linePlaybackProgress, 1.0f);
+                Vector2 newViewPos = Vector2.Lerp(_lastPlaybackViewPt, currPt.viewPos, _linePlaybackProgress);
+
+                // Draw each line point
+                DrawNewLinePointJoin(newViewPos, _teacherPlaybackProgress + 1, currPt.touchPressureMult);
+
+                if (_linePlaybackProgress >= 1.0f)
                 {
-                    // Report back to the manager to trigger drawing the next shape.
-                    _isPlayingBackDrawing = false;
-                    UpdatePlayerFollow();
-                    _parentDrawScript.DonePlayingBackShape();
+                    _linePlaybackProgress = 0.0f;
+                    _lastPlaybackViewPt = currPt.viewPos;
+
+                    // Repeat until drawing is done
+                    ++_teacherPlaybackProgress;
+                    if (_teacherPlaybackProgress >= _linePoints.Count)
+                    {
+                        // Report back to the manager to trigger drawing the next shape.
+                        _isPlayingBackDrawing = false;
+                        UpdatePlayerFollow();
+                        _parentDrawScript.DonePlayingBackShape();
+                    }
                 }
             }
         }
@@ -489,7 +507,7 @@ namespace Z3N
                     Vector3 newPos = _lineEndWorldPt;// Vector3.Lerp(_followObjTrans.position, _lineEndWorldPt, _followObjSpeed * Time.deltaTime);
                     _followObjTrans.position = newPos;
                 }
-                else if (_followObjTrans.gameObject.name.Contains("Teacher"))
+                else// if (_followObjTrans.gameObject.name.Contains("Teacher"))
                 {
                     // Hide the teacher's finger unless it is playing back
                     _followObjTrans.position = _followObjStartPos;

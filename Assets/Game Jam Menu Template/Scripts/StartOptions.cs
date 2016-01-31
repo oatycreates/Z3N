@@ -5,7 +5,11 @@ using UnityEngine.Audio;
 
 public class StartOptions : MonoBehaviour {
 
+    public static int SPLASH_SCENE = 0;
+    public static int MENU_SCENE = 1;
+    public static int GAME_SCENE_FIRST = 2;
 
+    public int difficulty = 0;
 
 	public int sceneToStart = 1;										//Index number in build settings of scene to load if changeScenes is true
 	public bool changeScenes;											//If true, load a new scene when Start is pressed, if false, fade out UI and continue in single scene
@@ -67,8 +71,7 @@ public class StartOptions : MonoBehaviour {
 
 	public void LoadDelayed()
 	{
-        
-        if (sceneToStart == 1)
+        if (sceneToStart >= GAME_SCENE_FIRST)
         {
             //Pause button now works if escape is pressed since we are no longer in Main menu.
             inMainMenu = false;
@@ -80,8 +83,38 @@ public class StartOptions : MonoBehaviour {
 		Application.LoadLevel (sceneToStart);
 	}
 
+    public void SetDifficultyEasy()
+    {
+        if (Application.loadedLevel == MENU_SCENE)
+        {
+            // If we are on the game scene, change the jump scene based on difficulty
+            difficulty = 0;
+            sceneToStart = GAME_SCENE_FIRST + difficulty;
+        }
+    }
 
-	public void StartGameInScene()
+    public void SetDifficultyMedium()
+    {
+        if (Application.loadedLevel == MENU_SCENE)
+        {
+            // If we are on the game scene, change the jump scene based on difficulty
+            difficulty = 1;
+            sceneToStart = GAME_SCENE_FIRST + difficulty;
+        }
+    }
+
+    public void SetDifficultyHard()
+    {
+        if (Application.loadedLevel == MENU_SCENE)
+        {
+            // If we are on the game scene, change the jump scene based on difficulty
+            difficulty = 2;
+            sceneToStart = GAME_SCENE_FIRST + difficulty;
+        }
+    }
+
+
+    public void StartGameInScene()
 	{
 		//Pause button now works if escape is pressed since we are no longer in Main menu.
 		inMainMenu = false;
