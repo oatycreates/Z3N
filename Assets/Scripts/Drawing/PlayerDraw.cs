@@ -23,6 +23,7 @@ namespace Z3N
         /// Is the player currently drawing a line
         /// </summary>
         static public bool s_isDrawing;
+
         /// <summary>
         /// Line colour to use.
         /// </summary>
@@ -88,6 +89,8 @@ namespace Z3N
         /// </summary>
         private int _teacherShapePlaybackProgress = 0;
 
+        private Vector3 _followObjStartPos = Vector3.zero;
+
         // Cached variables
         private static GameObject _shapeHolder = null;
         private static Transform _shapeHolderTrans = null;
@@ -116,6 +119,7 @@ namespace Z3N
             // Set default property values
             _drawnShapes = new List<ShapeDraw>();
             _isPlayingBackDrawing = false;
+            _followObjStartPos = followObjTrans.position;
 
             // Create line point holder if not around
             if (!_shapeHolder)
@@ -214,7 +218,7 @@ namespace Z3N
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
                 ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
                 newShape.SetDrawScriptHandle(this);
-                newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
+                newShape.SetFollowObjHandle(followObjTrans, followObjSpeed, _followObjStartPos);
                 newShape.SetIsActiveShape(true);
                 newShapeObj.transform.parent = _shapeHolderTrans;
 
@@ -248,7 +252,6 @@ namespace Z3N
         /// </summary>
         private void StartNextTeacherPlayback()
         {
-            Debug.Log(_teacherShapePlaybackProgress + " " + _drawnShapes.Count);
             if (_teacherShapePlaybackProgress < _drawnShapes.Count)
             {
                 // Only animate valid shapes
@@ -299,6 +302,17 @@ namespace Z3N
                     // TODO: Use object pooling for shape drawings.
                     GameObject.Destroy(shape.gameObject);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Instantly draw all shapes.
+        /// </summary>
+        public void DrawAllShapesInstant()
+        {
+            foreach (ShapeDraw shape in _drawnShapes)
+            {
+                shape.DrawShapeInstant();
             }
         }
         #endregion
