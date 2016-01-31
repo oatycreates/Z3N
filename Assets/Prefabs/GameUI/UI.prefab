@@ -3384,7 +3384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 0
-  sceneToStart: 0
+  sceneToStart: 1
   changeScenes: 1
   changeMusicOnStart: 0
   musicToChangeTo: 0

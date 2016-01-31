@@ -1526,6 +1526,12 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 491612, guid: 491e6f3cf8d928745b5fdf9a55ebc7be, type: 2}
   m_PrefabInternal: {fileID: 547471174}
+--- !u!114 &595313693 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11433306, guid: 6664c084b25430e45922d41b42a22a3e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1732123544}
+  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1001 &600296872
 Prefab:
   m_ObjectHideFlags: 0
@@ -3583,9 +3589,17 @@ Prefab:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11493680, guid: 6772d9abad44da7488fed4ca343c6d44, type: 2}
+      propertyPath: _inkBar
+      value: 
+      objectReference: {fileID: 595313693}
+    - target: {fileID: 11493680, guid: 6772d9abad44da7488fed4ca343c6d44, type: 2}
       propertyPath: _yinYangImage
       value: 
       objectReference: {fileID: 352548769}
+    - target: {fileID: 11493680, guid: 6772d9abad44da7488fed4ca343c6d44, type: 2}
+      propertyPath: gameManScript
+      value: 
+      objectReference: {fileID: 1603225442}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6772d9abad44da7488fed4ca343c6d44, type: 2}
   m_IsPrefabParent: 0
@@ -4201,20 +4215,20 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 11422522, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1603225442}
     - target: {fileID: 11483626, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1603225442}
-    - target: {fileID: 22410060, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 11422522, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1603225442}
+    - target: {fileID: 11404426, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 22410060, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
-      propertyPath: m_AnchorMax.y
+    - target: {fileID: 11480256, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
