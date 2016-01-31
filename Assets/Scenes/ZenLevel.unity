@@ -4189,11 +4189,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 11483626, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+    - target: {fileID: 11422522, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1116670071}
-    - target: {fileID: 11422522, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+    - target: {fileID: 11483626, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1116670071}
@@ -4204,14 +4204,6 @@ Prefab:
     - target: {fileID: 22410060, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22471638, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 201
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460732, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
-      propertyPath: sceneToStart
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
