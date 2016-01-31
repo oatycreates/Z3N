@@ -42,7 +42,18 @@ namespace Z3N
         /// </summary>
         [SerializeField]
         private int _inkCount = 5;
+
+        private int _inkRemaining = 5;
+
         /// <summary>
+        public Sprite[] _inkSprites;
+        /// <summary>
+        /// /// Individual sprites for inkbar
+        /// <summary> 
+        public UnityEngine.UI.Image _yinYangImage;
+        /// <summary>
+        /// /// YinYang UI Image to display ink sprites
+        /// <summary> 
         /// Handle to the game manager.
         /// </summary>
         public GameManager gameManScript = null;
@@ -122,7 +133,7 @@ namespace Z3N
         /// </summary>
         void Start()
         {
-
+            
         }
 
         /// <summary>
@@ -151,6 +162,12 @@ namespace Z3N
                 }
             }
             */
+            Debug.Log(_inkBar.value);
+            _inkRemaining = Mathf.RoundToInt(_inkBar.value * _inkCount);
+
+            if (Mathf.RoundToInt(_inkRemaining) > 0)
+            _yinYangImage.sprite = _inkSprites[_inkRemaining - 1];
+
             if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
             {
                 Application.LoadLevel(0);
