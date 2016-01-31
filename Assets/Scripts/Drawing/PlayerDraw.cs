@@ -37,7 +37,7 @@ namespace Z3N
         /// The ink bar
         /// </summary>
         [SerializeField]
-        private UnityEngine.UI.Slider _inkBar;
+        private UnityEngine.UI.Image _inkBar;
         /// <summary>
         /// The total number of ink the can be used
         /// </summary>
@@ -48,10 +48,6 @@ namespace Z3N
 
         /// <summary>
         public Sprite[] _inkSprites;
-        /// <summary>
-        /// /// Individual sprites for inkbar
-        /// <summary> 
-        public UnityEngine.UI.Image _yinYangImage;
         /// <summary>
         /// /// YinYang UI Image to display ink sprites
         /// <summary> 
@@ -106,7 +102,7 @@ namespace Z3N
         /// </summary>
         public bool InkNotEmpty
         {
-            get { return (_inkBar.value > 0.01f); }
+            get { return (_inkBar.fillAmount > 0.01f); }
         }
         #endregion
 
@@ -127,7 +123,7 @@ namespace Z3N
                 _shapeHolder = new GameObject("ShapeHolder");
                 _shapeHolderTrans = _shapeHolder.transform;
             }
-
+            _inkBar.color = lineCol;
             // Start the first shape
             CreateNextDrawingShape();
         }
@@ -146,9 +142,9 @@ namespace Z3N
         void Update()
         {
             bool isInteracting = (Input.touchCount > 1 || Input.GetMouseButton(0));
-            if(_inkBar.value > 0.001f && isInteracting)
+            if(_inkBar.fillAmount > 0.001f && isInteracting)
             {
-                _inkBar.value -= (Time.deltaTime / _inkCount);
+                _inkBar.fillAmount -= (Time.deltaTime / _inkCount);
             }
             // Simple code for the moment to simulate the triggering of the teacher's playback
             /*
@@ -167,10 +163,6 @@ namespace Z3N
             }
             */
             //Debug.Log(_inkBar.value);
-            _inkRemaining = Mathf.RoundToInt(_inkBar.value * _inkCount);
-
-            if (Mathf.RoundToInt(_inkRemaining) > 0)
-            _yinYangImage.sprite = _inkSprites[_inkRemaining - 1];
 
             if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
             {
@@ -183,7 +175,7 @@ namespace Z3N
         /// </summary>
         void OnEnable()
         {
-            _inkBar.value = 1.0f;
+            _inkBar.fillAmount = 1.0f;
         }
         #endregion
 
@@ -212,7 +204,7 @@ namespace Z3N
         /// </summary>
         private void CreateNextDrawingShape()
         {
-            if (_inkBar.value > 0.01f)
+            if (_inkBar.fillAmount > 0.01f)
             {
                 // Set up the new shape
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
