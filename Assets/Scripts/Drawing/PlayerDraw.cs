@@ -77,6 +77,8 @@ namespace Z3N
         /// </summary>
         private int _teacherShapePlaybackProgress = 0;
 
+        private Vector3 _followObjStartPos = Vector3.zero;
+
         // Cached variables
         private static GameObject _shapeHolder = null;
         private static Transform _shapeHolderTrans = null;
@@ -105,6 +107,7 @@ namespace Z3N
             // Set default property values
             _drawnShapes = new List<ShapeDraw>();
             _isPlayingBackDrawing = false;
+            _followObjStartPos = followObjTrans.position;
 
             // Create line point holder if not around
             if (!_shapeHolder)
@@ -197,7 +200,7 @@ namespace Z3N
                 GameObject newShapeObj = GameObject.Instantiate<GameObject>(shapePrefab);
                 ShapeDraw newShape = newShapeObj.GetComponent<ShapeDraw>();
                 newShape.SetDrawScriptHandle(this);
-                newShape.SetFollowObjHandle(followObjTrans, followObjSpeed);
+                newShape.SetFollowObjHandle(followObjTrans, followObjSpeed, _followObjStartPos);
                 newShape.SetIsActiveShape(true);
                 newShapeObj.transform.parent = _shapeHolderTrans;
 
