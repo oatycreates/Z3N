@@ -271,7 +271,7 @@ namespace Z3N
         /// Clears the current line renderer.
         /// </summary>
         /// <param name="a_cleanupShapes">Whether to delete the shapes when done.</param>
-        private void ClearDrawnLines(bool a_cleanupShapes = false)
+        public void ClearDrawnLines(bool a_cleanupShapes = false)
         {
             foreach (ShapeDraw shape in _drawnShapes)
             {
