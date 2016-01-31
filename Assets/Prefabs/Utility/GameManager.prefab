@@ -43,6 +43,9 @@ MonoBehaviour:
   studentScript: {fileID: 0}
   gameUIShowScript: {fileID: 0}
   studentReadyBtn: {fileID: 0}
+  instructionText: {fileID: 0}
+  instructionTitleText: {fileID: 0}
+  submitStudent: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

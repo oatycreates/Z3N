@@ -2708,6 +2708,18 @@ Prefab:
       propertyPath: studentReadyBtn
       value: 
       objectReference: {fileID: 2068175573}
+    - target: {fileID: 11444118, guid: 2a6ece978af04fb4d924260a25e7395b, type: 2}
+      propertyPath: instructionText
+      value: 
+      objectReference: {fileID: 1732123546}
+    - target: {fileID: 11444118, guid: 2a6ece978af04fb4d924260a25e7395b, type: 2}
+      propertyPath: instructionTitleText
+      value: 
+      objectReference: {fileID: 1732123545}
+    - target: {fileID: 11444118, guid: 2a6ece978af04fb4d924260a25e7395b, type: 2}
+      propertyPath: submitStudent
+      value: 
+      objectReference: {fileID: 1732123547}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2a6ece978af04fb4d924260a25e7395b, type: 2}
   m_IsPrefabParent: 0
@@ -4226,6 +4238,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1732123545 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11413950, guid: 6664c084b25430e45922d41b42a22a3e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1732123544}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!114 &1732123546 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11405088, guid: 6664c084b25430e45922d41b42a22a3e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1732123544}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!1 &1732123547 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 174726, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+  m_PrefabInternal: {fileID: 1732123544}
 --- !u!1001 &1764193071
 Prefab:
   m_ObjectHideFlags: 0

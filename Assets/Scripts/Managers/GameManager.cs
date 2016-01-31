@@ -20,6 +20,7 @@ namespace Z3N
         public GameObject studentReadyBtn = null;
         public UnityEngine.UI.Text instructionText = null;
         public UnityEngine.UI.Text instructionTitleText = null;
+        public GameObject submitStudent = null;
 
         private bool hasStudentDrawn = false;
         #endregion
@@ -31,6 +32,7 @@ namespace Z3N
         void Awake()
         {
             hasStudentDrawn = false;
+            submitStudent.SetActive(true);
             studentReadyBtn.SetActive(false);
         }
 
@@ -114,6 +116,7 @@ namespace Z3N
             {
                 Debug.Log("Start team score showcase");
                 // Show the 'Team score' window
+                submitStudent.SetActive(false);
                 SwitchToOtherPlayer(false);
             }
         }
