@@ -166,7 +166,7 @@ namespace Z3N
                 }
             }
             */
-            Debug.Log(_inkBar.value);
+            //Debug.Log(_inkBar.value);
             _inkRemaining = Mathf.RoundToInt(_inkBar.value * _inkCount);
 
             if (Mathf.RoundToInt(_inkRemaining) > 0)

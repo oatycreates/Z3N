@@ -153,7 +153,7 @@ namespace Z3N
         /// Layers to accept when raycasting for checking player input.
         /// Get 'DrawableArea'.
         /// </summary>
-        private LayerMask _lineRaycastDesired = LayerMask.NameToLayer("DrawableArea");
+        private LayerMask _lineRaycastDesired;
 
         // Cached variables
         private LineRenderer _lineRenderer = null;
@@ -173,6 +173,8 @@ namespace Z3N
             _isPlayingBackDrawing = false;
             _linePoints = new List<SLinePoint>();
             _lineRenderer = GetComponent<LineRenderer>();
+
+            _lineRaycastDesired = LayerMask.NameToLayer("DrawableArea");
 
             // Create line point holder if not around
             if (!_linePtHolder)
