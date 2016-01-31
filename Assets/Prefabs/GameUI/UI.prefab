@@ -1565,7 +1565,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: This is what you should be doing right now!
+  m_Text: Draw some sacred symbols for your student to learn. Press submit when you
+    are done or if you run out of ink.
 --- !u!114 &11406572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1925,7 +1926,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: TEACHER / STUDENT
+  m_Text: SENSEI
 --- !u!114 &11416792
 MonoBehaviour:
   m_ObjectHideFlags: 1
