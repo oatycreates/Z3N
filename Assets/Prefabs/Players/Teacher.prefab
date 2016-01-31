@@ -368,16 +368,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teacherPlaybackStayTime: 1
-  lineCol: {r: 0.81960785, g: 0.03529412, b: 1, a: 1}
+  lineCol: {r: 0.81960785, g: 0, b: 1, a: 1}
   followObjTrans: {fileID: 419666}
-  _inkBar: {fileID: 0}
+  _inkBar: {fileID: 11466394, guid: 0122574da59b25442be4b79188b2416a, type: 2}
   _inkCount: 5
   _inkSprites:
-  - {fileID: 21300000, guid: 33733ca4e7cd713409388e7882ac8310, type: 3}
+  - {fileID: 21300000, guid: 8b97b8f511f2b4e4a8f52576a99b4a16, type: 3}
+  - {fileID: 21300000, guid: cda39aa19f68a69489aa6b26af087092, type: 3}
+  - {fileID: 21300000, guid: 163a8f2669e389a42bbf7ed0ed24d293, type: 3}
+  - {fileID: 21300000, guid: 4ac4b078e0d3f7446b9c84628df7828b, type: 3}
+  - {fileID: 21300000, guid: 7ec9b17b4b1d55442b8751eb5e9f6a7c, type: 3}
+  - {fileID: 21300000, guid: 09043f86ebf83d04982e815ce7df5851, type: 3}
+  - {fileID: 21300000, guid: d3137430c9dcb9b4fa784be8b5350d79, type: 3}
   - {fileID: 21300000, guid: ccb62536736d48c43a303c8a8e540736, type: 3}
-  - {fileID: 21300000, guid: 8516cf27d12fe1a43b0fcb2c4131b3c1, type: 3}
-  - {fileID: 21300000, guid: f747b8cee8809a64dbadeff60271cac5, type: 3}
-  - {fileID: 21300000, guid: 33cf9268dcaa2d14781044562a76bdca, type: 3}
+  - {fileID: 21300000, guid: 0a8c352706001f04b937b6d63a91a4c5, type: 3}
+  - {fileID: 21300000, guid: 33733ca4e7cd713409388e7882ac8310, type: 3}
   _yinYangImage: {fileID: 0}
   gameManScript: {fileID: 0}
   followObjSpeed: 5
@@ -1936,7 +1941,17 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: _yinYangImage
+      value: 
+      objectReference: {fileID: 11451676, guid: 6d4437c544d89744b80c11a66f3b5936,
+        type: 2}
+    - target: {fileID: 0}
+      propertyPath: _inkBar
+      value: 
+      objectReference: {fileID: 11466394, guid: 0122574da59b25442be4b79188b2416a,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 139116}

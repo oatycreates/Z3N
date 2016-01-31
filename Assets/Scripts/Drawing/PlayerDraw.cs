@@ -44,7 +44,7 @@ namespace Z3N
         [SerializeField]
         private int _inkCount = 5;
 
-        private int _inkRemaining = 5;
+        private int _inkRemaining = 10;
 
         /// <summary>
         public Sprite[] _inkSprites;
@@ -145,28 +145,6 @@ namespace Z3N
             if(_inkBar.fillAmount > 0.001f && isInteracting)
             {
                 _inkBar.fillAmount -= (Time.deltaTime / _inkCount);
-            }
-            // Simple code for the moment to simulate the triggering of the teacher's playback
-            /*
-            if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
-            if (gameObject.activeSelf && isActiveAndEnabled)
-            {
-                // Simple code for the moment to simulate the triggering of the teacher's playback
-                if (Input.touchCount == 3 || Input.GetKeyUp(KeyCode.R))
-                {
-                    if (isTeacher && !_isPlayingBackDrawing)
-                    {
-                        // Editor to trigger teacher playback
-                        StartTeacherPlayback();
-                    }
-                }
-            }
-            */
-            //Debug.Log(_inkBar.value);
-
-            if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
-            {
-                Application.LoadLevel(0);
             }
         }
 

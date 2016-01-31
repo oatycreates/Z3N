@@ -18,6 +18,8 @@ namespace Z3N
         public PlayerDraw studentScript = null;
         public ShowPanels gameUIShowScript = null;
         public GameObject studentReadyBtn = null;
+        public UnityEngine.UI.Text instructionText = null;
+        public UnityEngine.UI.Text instructionTitleText = null;
 
         private bool hasStudentDrawn = false;
         #endregion
@@ -105,6 +107,8 @@ namespace Z3N
                 //Disable teacher script
                 teacherScript.ClearDrawnLines();
                 teacherScript.enabled = false;
+                instructionText.text = "Show your devotion by drawing the sensei's symbols. Press submit when you are done or if you run out of ink."; // Instructions to student
+                instructionTitleText.text = "STUDENT";
             }
             else if (studentScript.enabled)
             {
