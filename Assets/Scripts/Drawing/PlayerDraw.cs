@@ -166,16 +166,11 @@ namespace Z3N
                 }
             }
             */
-            Debug.Log(_inkRemaining);
+            //Debug.Log(_inkRemaining);
             _inkRemaining = Mathf.RoundToInt(_inkBar.value * _inkCount * 2);
 
             if (Mathf.RoundToInt(_inkRemaining) > 0)
             _yinYangImage.sprite = _inkSprites[_inkRemaining - 1];
-
-            if (/*Input.touchCount == 4 ||*/ Input.GetKeyUp(KeyCode.Escape))
-            {
-                Application.LoadLevel(0);
-            }
         }
 
         /// <summary>
