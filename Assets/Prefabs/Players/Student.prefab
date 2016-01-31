@@ -125,16 +125,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teacherPlaybackStayTime: 1
-  lineCol: {r: 0, g: 0.81960785, b: 1, a: 0.6666667}
+  lineCol: {r: 0, g: 0.81960785, b: 1, a: 1}
   followObjTrans: {fileID: 407886}
   _inkBar: {fileID: 0}
   _inkCount: 5
   _inkSprites:
   - {fileID: 21300000, guid: 57e3e9740d7a72c488669f050a5163d8, type: 3}
+  - {fileID: 21300000, guid: 69a95b93ab202ee41ac8ec433217fa46, type: 3}
   - {fileID: 21300000, guid: 637f4da558ce0004a8376b8e8348b0b1, type: 3}
-  - {fileID: 21300000, guid: 0a581563c87ccdf44bd20d11b365e26c, type: 3}
-  - {fileID: 21300000, guid: 8a1308fca6b34ef48961c05d30b95201, type: 3}
-  - {fileID: 21300000, guid: 6e25889c965df514c878eaf45206d206, type: 3}
+  - {fileID: 21300000, guid: f1b2fff6b6d684b4db9fe338a489aa6a, type: 3}
+  - {fileID: 21300000, guid: 8f5dffb8e6bb3e042b0c24d25e88dc82, type: 3}
+  - {fileID: 21300000, guid: d80e9956600b7b446b1856b1faf5947d, type: 3}
+  - {fileID: 21300000, guid: d092e058afdf1ac4c8b4b0cb469c26e1, type: 3}
+  - {fileID: 21300000, guid: 3ad2b16d947ec5c46920171652c49ff8, type: 3}
+  - {fileID: 21300000, guid: d99b16c80d161394da805e0af3736fc6, type: 3}
+  - {fileID: 21300000, guid: 29011d511e38fb841a263582a40ccf79, type: 3}
   _yinYangImage: {fileID: 0}
   gameManScript: {fileID: 0}
   followObjSpeed: 5
