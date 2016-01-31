@@ -18,6 +18,8 @@ namespace Z3N
         public PlayerDraw studentScript = null;
         public ShowPanels gameUIShowScript = null;
         public GameObject studentReadyBtn = null;
+
+        private bool hasStudentDrawn = false;
         #endregion
 
         #region Unity code
@@ -26,6 +28,7 @@ namespace Z3N
         /// </summary>
         void Awake()
         {
+            hasStudentDrawn = false;
             studentReadyBtn.SetActive(false);
         }
 
@@ -63,8 +66,22 @@ namespace Z3N
             {
                 Debug.Log("Switch to teacher");
 
-                // Score the team
-                gameUIShowScript.ShowScorePanel();
+                if (!hasStudentDrawn)
+                {
+                    // Show the teacher's drawing
+                    teacherScript.DrawAllShapesInstant();
+
+                    // Start the student playback
+                    studentScript.StartTeacherPlayback();
+                    hasStudentDrawn = true;
+                }
+                else
+                {
+                    hasStudentDrawn = false;
+
+                    // Score the team
+                    gameUIShowScript.ShowScorePanel();
+                }
             }
         }
 

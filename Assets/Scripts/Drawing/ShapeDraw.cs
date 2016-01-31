@@ -9,6 +9,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace Z3N
 {
@@ -360,6 +361,18 @@ namespace Z3N
         public bool GetShapeHasStarted()
         {
             return _linePoints.Count > 0;
+        }
+
+        /// <summary>
+        /// Instantly throw up the shape.
+        /// </summary>
+        public void DrawShapeInstant()
+        {
+            foreach (SLinePoint line in _linePoints)
+            {
+                // Connect the line dots
+                DrawNewLinePointJoin(line.viewPos, _linePoints.Count, line.touchPressureMult);
+            }
         }
 
         private void AddLinePoint(Vector2 a_viewPt, float a_touchPressureMult, bool a_isShapeEnd = false)

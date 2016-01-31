@@ -231,7 +231,6 @@ namespace Z3N
         /// </summary>
         private void StartNextTeacherPlayback()
         {
-            Debug.Log(_teacherShapePlaybackProgress + " " + _drawnShapes.Count);
             if (_teacherShapePlaybackProgress < _drawnShapes.Count)
             {
                 // Only animate valid shapes
@@ -282,6 +281,17 @@ namespace Z3N
                     // TODO: Use object pooling for shape drawings.
                     GameObject.Destroy(shape.gameObject);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Instantly draw all shapes.
+        /// </summary>
+        public void DrawAllShapesInstant()
+        {
+            foreach (ShapeDraw shape in _drawnShapes)
+            {
+                shape.DrawShapeInstant();
             }
         }
         #endregion
