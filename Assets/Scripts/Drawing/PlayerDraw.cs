@@ -23,6 +23,7 @@ namespace Z3N
         /// Is the player currently drawing a line
         /// </summary>
         static public bool s_isDrawing;
+
         /// <summary>
         /// Line colour to use.
         /// </summary>

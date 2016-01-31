@@ -42,7 +42,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputSampleTime: 0.015
   teacherPlaybackRate: 0.5
-  maxLineThickness: 3
+  maxLineThickness: 5
   lineDrawDepth: 1
   linePointPrefab: {fileID: 106398, guid: 411226cb5027c164d9c0dfa2d19293ac, type: 2}
 --- !u!120 &12074786
@@ -107,7 +107,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxLineThickness
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_ReceiveShadows

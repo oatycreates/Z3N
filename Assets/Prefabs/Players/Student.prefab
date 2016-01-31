@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teacherPlaybackStayTime: 1
-  lineCol: {r: 0, g: 0.81960785, b: 1, a: 1}
+  lineCol: {r: 0, g: 0.81960785, b: 1, a: 0.6666667}
   followObjTrans: {fileID: 407886}
   _inkBar: {fileID: 0}
   _inkCount: 5
