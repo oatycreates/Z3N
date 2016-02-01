@@ -112,6 +112,7 @@ namespace Z3N
         /// </summary>
         void Awake()
         {
+			// Find the GameManager script
 			gameManScript = GameObject.Find ("GameManager").GetComponent<GameManager> ();
             // Set default property values
             _drawnShapes = new List<ShapeDraw>();
@@ -124,6 +125,7 @@ namespace Z3N
                 _shapeHolder = new GameObject("ShapeHolder");
                 _shapeHolderTrans = _shapeHolder.transform;
             }
+			// Find the correct ink bar using the game objects' tags
 			if (gameObject.tag == "Teacher")
 				_inkBar = GameObject.FindGameObjectWithTag ("TeacherInkBar").GetComponent<UnityEngine.UI.Image>();
 			else
