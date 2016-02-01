@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Teacher
   - Student
+  - TeacherInkBar
+  - StudentInkBar
   layers:
   - Default
   - TransparentFX

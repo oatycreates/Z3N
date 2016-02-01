@@ -370,7 +370,6 @@ MonoBehaviour:
   teacherPlaybackStayTime: 1
   lineCol: {r: 0.81960785, g: 0, b: 1, a: 1}
   followObjTrans: {fileID: 419666}
-  _inkBar: {fileID: 11466394, guid: 0122574da59b25442be4b79188b2416a, type: 2}
   _inkCount: 5
   _inkSprites:
   - {fileID: 21300000, guid: 8b97b8f511f2b4e4a8f52576a99b4a16, type: 3}
@@ -383,7 +382,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ccb62536736d48c43a303c8a8e540736, type: 3}
   - {fileID: 21300000, guid: 0a8c352706001f04b937b6d63a91a4c5, type: 3}
   - {fileID: 21300000, guid: 33733ca4e7cd713409388e7882ac8310, type: 3}
-  _yinYangImage: {fileID: 0}
   gameManScript: {fileID: 0}
   followObjSpeed: 5
   isTeacher: 1

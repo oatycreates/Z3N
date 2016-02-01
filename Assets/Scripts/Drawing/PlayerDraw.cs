@@ -36,7 +36,6 @@ namespace Z3N
         /// <summary>
         /// The ink bar
         /// </summary>
-        [SerializeField]
         private UnityEngine.UI.Image _inkBar;
         /// <summary>
         /// The total number of ink the can be used
@@ -53,6 +52,7 @@ namespace Z3N
         /// <summary> 
         /// Handle to the game manager.
         /// </summary>
+		[HideInInspector]
         public GameManager gameManScript = null;
 
         /// <summary>
@@ -112,6 +112,7 @@ namespace Z3N
         /// </summary>
         void Awake()
         {
+			gameManScript = GameObject.Find ("GameManager").GetComponent<GameManager> ();
             // Set default property values
             _drawnShapes = new List<ShapeDraw>();
             _isPlayingBackDrawing = false;
@@ -123,6 +124,10 @@ namespace Z3N
                 _shapeHolder = new GameObject("ShapeHolder");
                 _shapeHolderTrans = _shapeHolder.transform;
             }
+			if (gameObject.tag == "Teacher")
+				_inkBar = GameObject.FindGameObjectWithTag ("TeacherInkBar").GetComponent<UnityEngine.UI.Image>();
+			else
+				_inkBar = GameObject.FindGameObjectWithTag ("StudentInkBar").GetComponent<UnityEngine.UI.Image>();
             _inkBar.color = lineCol;
             // Start the first shape
             CreateNextDrawingShape();
