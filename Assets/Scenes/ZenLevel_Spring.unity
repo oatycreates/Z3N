@@ -4563,6 +4563,14 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StudentReadyPressed
       objectReference: {fileID: 0}
+    - target: {fileID: 22403198, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22403198, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6664c084b25430e45922d41b42a22a3e, type: 2}
   m_IsPrefabParent: 0

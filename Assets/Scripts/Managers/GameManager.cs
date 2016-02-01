@@ -111,6 +111,7 @@ namespace Z3N
                 teacherScript.enabled = false;
                 instructionText.text = "Show your devotion by drawing the sensei's symbols. Press submit when you are done or if you run out of ink."; // Instructions to student
                 instructionTitleText.text = "STUDENT";
+				gameUIShowScript.HideSymbolPanel ();
             }
             else if (studentScript.enabled)
             {

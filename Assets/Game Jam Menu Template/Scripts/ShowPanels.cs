@@ -16,6 +16,7 @@ public class ShowPanels : MonoBehaviour {
     public GameObject instructionTint;                      //Store a reference to the Game Object InfoTint 
     public GameObject scorePanel;                           //Store a reference to the Game Object ScorePanel
     public GameObject scoreTint;                            //Store a reference to the Game Object ScoreTint
+	public GameObject symbolPanel;                          //Store a reference to the Game Object SymbolPanel
 
     public bool waitForPanel;                               //Store a reference for whether or not a panel must be closed before unpausing
 
@@ -139,5 +140,17 @@ public class ShowPanels : MonoBehaviour {
         scorePanel.SetActive(false);
         scoreTint.SetActive(false);
     }
+
+	//Call this function to activate and display the Symbol panel during the main menu
+	public void ShowSymbolPanel()
+	{
+		symbolPanel.SetActive(true);
+	}
+
+	//Call this function to deactivate and hide the Symbol panel during the main menu
+	public void HideSymbolPanel()
+	{
+		symbolPanel.SetActive(false);
+	}
 
 }
