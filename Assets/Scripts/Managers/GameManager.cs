@@ -21,6 +21,9 @@ namespace Z3N
         public UnityEngine.UI.Text instructionText = null;
         public UnityEngine.UI.Text instructionTitleText = null;
         public GameObject submitStudent = null;
+		public float teacherPixels;
+		public float studentPixels;
+		public int studentGrade;
 
         private bool hasStudentDrawn = false;
         #endregion
@@ -49,7 +52,10 @@ namespace Z3N
         /// </summary>
         void Update()
         {
-
+			if (teacherPixels > 0) 
+			{
+				studentGrade = Mathf.RoundToInt (studentPixels / teacherPixels * 100);
+			} 
         }
         #endregion
         

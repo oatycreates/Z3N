@@ -46,6 +46,9 @@ MonoBehaviour:
   instructionText: {fileID: 0}
   instructionTitleText: {fileID: 0}
   submitStudent: {fileID: 0}
+  teacherPixels: 0
+  studentPixels: 0
+  studentGrade: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
