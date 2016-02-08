@@ -387,7 +387,7 @@ namespace Z3N
             DrawNewLinePointJoin(a_viewPt, _linePoints.Count, a_touchPressureMult);
 
 #if UNITY_EDITOR
-            Debug.Log("Added point: " + newPt);
+            //Debug.Log("Added point: " + newPt);
 #endif
         }
 

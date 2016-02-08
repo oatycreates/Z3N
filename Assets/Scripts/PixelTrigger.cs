@@ -32,7 +32,7 @@ public class PixelTrigger : MonoBehaviour {
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, myLayer))
         {
-            Debug.Log(hit.collider.transform.gameObject.name);
+            //Debug.Log(hit.collider.transform.gameObject.name);
             if (hit.collider == transform.GetComponent<MeshCollider>())
             {
                 if (!touched && myGameManager.teacherScript.enabled)
