@@ -201,7 +201,8 @@ namespace Z3N
 
                 // Set line colour
                 LineRenderer lineRen = newShapeObj.GetComponent<LineRenderer>();
-                lineRen.SetColors(lineCol, lineCol);
+                lineRen.startColor = lineCol;
+                lineRen.endColor = lineCol;
                 Renderer ren = newShapeObj.GetComponent<Renderer>();
                 ren.material.color = lineCol;
 

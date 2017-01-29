@@ -338,7 +338,7 @@ namespace Z3N
         /// </summary>
         public void ClearDrawnLine()
         {
-            _lineRenderer.SetVertexCount(0);
+            _lineRenderer.numPositions = 0;
         }
 
         /// <summary>
@@ -433,11 +433,12 @@ namespace Z3N
                 // TODO: Draw curved line using: http://www.habrador.com/tutorials/catmull-rom-splines/
 
                 // Draw straight line between latest 2 points
-                _lineRenderer.SetVertexCount(a_newPtCount);
+                _lineRenderer.numPositions = a_newPtCount;
                 _lineRenderer.SetPosition(a_newPtCount - 1, worldPt);
 
                 // Simulate basic 'running out of ink'
-                _lineRenderer.SetWidth(maxLineThickness * (1.0f / _linePoints.Count) * a_touchPressureMult, maxLineThickness * a_touchPressureMult);
+                _lineRenderer.startWidth = maxLineThickness * (1.0f / _linePoints.Count) * a_touchPressureMult;
+                _lineRenderer.endWidth = maxLineThickness * a_touchPressureMult;
 
                 // Store last world point for drawing the curve
                 _lineEndWorldPt = worldPt;
